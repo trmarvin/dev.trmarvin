@@ -1,0 +1,119 @@
+/* =========================
+   COMPONENTS – reusable UI
+   ========================= */
+
+/* Header / Nav */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: color-mix(in oklab, var(--surface) 88%, transparent);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(6px);
+}
+
+header .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .8rem 0;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    text-decoration: none;
+    color: inherit;
+    font-weight: 800;
+}
+
+.brand .logo {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--border);
+}
+
+nav ul {
+    display: flex;
+    align-items: center;
+    gap: .35rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav a {
+    text-decoration: none;
+    color: inherit;
+    padding: .35rem .6rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid transparent;
+}
+
+nav a:hover,
+nav a:focus {
+    border-color: var(--border);
+    background: color-mix(in oklab, var(--teal) 18%, transparent);
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    text-decoration: none;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: .55rem .9rem;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow);
+}
+
+.btn:hover,
+.btn:focus {
+    background: color-mix(in oklab, var(--surface) 85%, var(--teal) 15%);
+}
+
+.btn.accent {
+    background: var(--teal);
+    border-color: transparent;
+    color: #0c1116;
+    font-weight: 700;
+}
+
+.btn.accent:hover,
+.btn.accent:focus {
+    background: var(--teal-700);
+    color: #0b0f14;
+}
+
+/* Grid / Cards */
+.grid {
+    --min: 240px;
+    display: grid;
+    gap: 1rem;
+    margin-top: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(var(--min), 1fr));
+}
+
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    box-shadow: var(--shadow);
+}
+
+.card:hover {
+    transform: translateY(-1px);
+    transition: transform .12s ease-in-out;
+}
+
+/* Footer */
+footer {
+    border-top: 1px solid var(--border);
+    padding: 1rem 0;
+    color: var(--muted);
+}

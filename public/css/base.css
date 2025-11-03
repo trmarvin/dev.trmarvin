@@ -1,0 +1,124 @@
+/* =========================
+   BASE – resets + typography + layout
+   ========================= */
+
+/* Reset / Normalize */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+}
+
+html:focus-within {
+    scroll-behavior: smooth;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+    display: block;
+    max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+    font: inherit;
+}
+
+:target {
+    scroll-margin-top: 6rem;
+}
+
+html {
+    color-scheme: dark light;
+}
+
+:focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 2px;
+}
+
+body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--ff-sans);
+    line-height: 1.6;
+    font-size: var(--fs-0);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+.wrap {
+    width: min(var(--wrap, 960px), 92vw);
+    margin-inline: auto;
+    padding: var(--space-5, 24px) var(--space-6, 32px);
+}
+
+.prose {
+    max-width: var(--prose);
+}
+
+.flow>*+* {
+    margin-top: var(--space-4);
+}
+
+a {
+    color: var(--link);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+a:hover,
+a:focus {
+    color: var(--link-hover);
+}
+
+h1,
+h2,
+h3 {
+    line-height: 1.2;
+    letter-spacing: .2px;
+}
+
+h1 {
+    font-size: var(--fs-4);
+    margin-bottom: var(--space-3);
+}
+
+h2 {
+    font-size: var(--fs-3);
+    margin: var(--space-6) 0 var(--space-2);
+}
+
+h3 {
+    font-size: var(--fs-2);
+    margin: var(--space-4) 0 var(--space-2);
+}
+
+ul,
+ol {
+    padding-left: 1.2rem;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: var(--space-6) 0;
+}
+
+code {
+    font-family: var(--ff-mono);
+    font-size: .95em;
+    background: var(--surface-2);
+    padding: .15em .35em;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+}

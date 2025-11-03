@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+        <%= (typeof title !=='undefined' ? title : 'dev.trmarvin' ) %>
+    </title>
+
+    <link rel="stylesheet" href="/css/tokens.css" />
+    <link rel="stylesheet" href="/css/base.css" />
+    <link rel="stylesheet" href="/css/components.css" />
+    <link rel="stylesheet" href="/css/pages.css" />
+
+    <!-- Optional per-page CSS -->
+    <% if (typeof pageCSS !=='undefined' && Array.isArray(pageCSS)) { pageCSS.forEach(href=> { %>
+        <link rel="stylesheet" href="<%= href %>" />
+        <% }) } %>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="/">dev.trmarvin</a> · <a href="/blog">Blog</a>
+        </nav>
+    </header>
+
+    <main class="wrap flow">
+        <%- body %> <!-- required by express-ejs-layouts -->
+    </main>
+
+    <!-- Optional per-page scripts -->
+    <% if (typeof pageScripts !=='undefined' && Array.isArray(pageScripts)) { pageScripts.forEach(src=> { %>
+        <script src="<%= src %>" defer></script>
+        <% }) } %>
+</body>
+
+</html>

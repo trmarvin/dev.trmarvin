@@ -1,0 +1,20 @@
+<!-- views/blog.ejs -->
+<h1>Blog</h1>
+
+<% if (Array.isArray(posts) && posts.length) { %>
+    <ul>
+        <% posts.forEach(p=> { %>
+            <li>
+                <a href="/blog/<%= p.slug %>">
+                    <%= p.title %>
+                </a>
+                <small> · <%= (p.published_at ? new Date(p.published_at).toLocaleDateString() : '' ) %></small><br />
+                <em>
+                    <%= p.excerpt || '' %>
+                </em>
+            </li>
+            <% }) %>
+    </ul>
+    <% } else { %>
+        <p>No posts yet.</p>
+        <% } %>

@@ -1,0 +1,9 @@
+    <article>
+        <h1>
+            <%= post.title %>
+        </h1>
+        <p><small>
+                <%= new Date(post.published_at).toLocaleString() %>
+            </small></p>
+        <div><%- post.body %></div>
+    </article>

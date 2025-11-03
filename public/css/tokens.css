@@ -1,0 +1,58 @@
+/* =========================
+   TOKENS – design system
+   ========================= */
+:root {
+    --bg: #1E242B;
+    --surface: #252C34;
+    --surface-2: #2A323B;
+    --ink: #E6E9EF;
+    --muted: #A5B0BD;
+    --border: #343C46;
+    --grid: #343C46;
+
+    --teal: #2D8C85;
+    --teal-700: #23706A;
+    --orange: #D37A15;
+
+    --link: var(--teal);
+    --link-hover: var(--teal-700);
+
+    --radius-sm: 10px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+    --shadow: 0 2px 10px rgba(0, 0, 0, .25);
+
+    --wrap: 1000px;
+    --prose: 70ch;
+
+    --ff-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Inter, Roboto, Arial, "Noto Sans";
+    --ff-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+    --fs-0: clamp(.94rem, .9rem + .2vw, 1rem);
+    --fs-1: clamp(1.05rem, 1rem + .3vw, 1.15rem);
+    --fs-2: clamp(1.25rem, 1.1rem + .8vw, 1.5rem);
+    --fs-3: clamp(1.45rem, 1.2rem + 1.2vw, 1.85rem);
+    --fs-4: clamp(1.75rem, 1.3rem + 2vw, 2.25rem);
+
+    --space-1: .25rem;
+    --space-2: .5rem;
+    --space-3: .75rem;
+    --space-4: 1rem;
+    --space-5: 1.5rem;
+    --space-6: 2rem;
+    --space-7: 3rem;
+}
+
+/* Optional light theme */
+html[data-theme="light"] {
+    --bg: #F7F8FA;
+    --surface: #FFFFFF;
+    --surface-2: #F3F5F7;
+    --ink: #0F141A;
+    --muted: #475467;
+    --border: #D0D5DD;
+    --grid: #E5E7EB;
+    --link: #1B7F78;
+    --link-hover: #15675F;
+    --shadow: 0 2px 10px rgba(16, 24, 40, .08);
+}
