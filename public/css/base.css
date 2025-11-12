@@ -139,3 +139,25 @@ code {
     color: var(--teal);
     font-weight: 600;
 } */
+
+/* The clickable frame */
+.project-media {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    /* pick 4/3 or 1/1 if you prefer */
+    overflow: hidden;
+    border-radius: 12px;
+    /* optional */
+    background: #111;
+    /* shows while image loads or if missing */
+}
+
+/* Make the image fill the frame without distortion */
+.project-media img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    /* fills & crops excess; use 'contain' to avoid cropping */
+}
