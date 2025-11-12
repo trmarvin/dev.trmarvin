@@ -1,0 +1,12 @@
+<h1>New Post</h1>
+<form method="POST" action="/admin/posts">
+    <label>Title <input name="title" required></label><br>
+    <label>Slug <input name="slug" required></label><br>
+    <label>Excerpt<br>
+        <textarea name="excerpt" rows="5" cols="50"></textarea>
+    </label><br>
+    <label>Content<br>
+        <textarea name="body" rows="12" cols="50"></textarea>
+    </label><br>
+    <button type="submit">Create</button>
+</form>

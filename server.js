@@ -3,15 +3,27 @@ import express from 'express';
 import path from 'node:path';
 import pages from './routes/pages.js';
 import api from './routes/api.js';
+import admin from './routes/admin.js';
 import './config/db.js';
 import expressLayouts from 'express-ejs-layouts';
+import cors from 'cors';
 
 const app = express();
 
-// Core middleware (once)
+// ===== CORS =====
+// Basic setup for now (allow everything during dev)
+app.use(cors());
+
+// Later: tighten this up once you know your frontends
+// app.use(cors({
+//   origin: ['http://localhost:3000', 'https://dev.trmarvin.org'],
+//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//   credentials: true, // if using cookies or auth
+// }));
+
+// Mount core middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(process.cwd(), 'public')));
 
 // EJS + express-ejs-layouts
 app.set('view engine', 'ejs');
@@ -27,23 +39,29 @@ app.use((req, res, next) => {
   next();
 });
 
-// Routes
+app.use((req, res, next) => {
+  res.locals.path = req.path; // makes "path" available in all EJS views
+  next();
+});
+
+// Mount router
 app.use('/', pages);
 app.use('/api', api);
+app.use('/admin', admin);
+app.use(express.static(path.join(process.cwd(), 'public')));
 
-// Health check
+// Health check -> for future deployment
 app.get('/healthz', (_req, res) => res.send('ok'));
 
-// 404
+// 404 handler
 app.use((req, res) => {
   if (req.path.startsWith('/api')) {
     return res.status(404).json({ error: 'Not found' });
   }
-  // Use the same key your layout reads: "title"
   res.status(404).render('index', { title: 'Not found' });
 });
 
-// 500
+// 500 handler
 app.use((err, req, res, _next) => {
   console.error(err);
   if (req.path.startsWith('/api')) {
@@ -70,4 +88,5 @@ const start = async () => {
 process.on('unhandledRejection', (r) => console.error('Unhandled Rejection:', r));
 process.on('uncaughtException', (e) => console.error('Uncaught Exception:', e));
 
+// start server
 start();

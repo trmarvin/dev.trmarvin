@@ -2,7 +2,7 @@
    BASE – resets + typography + layout
    ========================= */
 
-/* Reset / Normalize */
+
 *,
 *::before,
 *::after {
@@ -46,6 +46,14 @@ html {
     outline-offset: 2px;
 }
 
+/* Universal page gutters + max width */
+.container {
+    max-width: var(--max, 1100px);
+    margin: 0 auto;
+    padding: 0 var(--space-3, 1rem);
+    box-sizing: border-box;
+}
+
 body {
     background: var(--bg);
     color: var(--ink);
@@ -79,6 +87,10 @@ a {
 a:hover,
 a:focus {
     color: var(--link-hover);
+}
+
+p {
+    margin-bottom: var(--space-2);
 }
 
 h1,
@@ -122,3 +134,8 @@ code {
     border-radius: 6px;
     border: 1px solid var(--border);
 }
+
+/* .nav a.active {
+    color: var(--teal);
+    font-weight: 600;
+} */

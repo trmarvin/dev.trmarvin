@@ -1,45 +1,91 @@
 // controllers/postController.js
-import { getAllPosts, getPostBySlug, createPost } from '../models/postModel.js';
+import {
+  getAllPosts,
+  getPostBySlug,
+  createPost,
+  updatePost,
+  deletePost,
+  getPostById,
+} from '../models/postModel.js';
 
-export const listPostsPage = async (req, res, next) => {
+/* ------------------------- CRUD ------------------------- */
+
+// GET /api/posts (all posts)
+export async function listPostsApi(_req, res, next) {
   try {
     const posts = await getAllPosts();
-    res.render('blog', {
-      title: 'Blog',                     // <-- use "title" (layout reads this)
-      posts: Array.isArray(posts) ? posts : []  // <-- always an array
-    });
+    res.json(posts);                    // << JSON, not res.render
   } catch (err) { next(err); }
-};
+}
 
-export const singlePostPage = async (req, res, next) => {
-  try {
-    const post = await getPostBySlug(req.params.slug);
-    if (!post) return next(); // falls through to your 404 handler
-    res.render('post', {
-      title: post.title,   // <-- use "title"
-      post
-    });
-  } catch (err) { next(err); }
-};
-
-// APIs unchanged
-export const listPostsApi = async (req, res, next) => {
-  try { res.json(await getAllPosts()); } catch (err) { next(err); }
-};
-
-export const getPostApi = async (req, res, next) => {
+// GET /api/posts/:slug (individual post)
+export async function getPostApi(req, res, next) {
   try {
     const post = await getPostBySlug(req.params.slug);
     if (!post) return res.status(404).json({ error: 'Not found' });
     res.json(post);
   } catch (err) { next(err); }
-};
+}
 
-export const createPostApi = async (req, res, next) => {
+// POST /api/posts
+export async function createPostApi(req, res, next) {
   try {
-    if (req.headers.authorization !== `Bearer ${process.env.ADMIN_TOKEN}`)
-      return res.status(401).json({ error: 'Unauthorized' });
-    const post = await createPost(req.body);
-    res.status(201).json(post);
+    const { title, slug, excerpt = '', body } = req.body;
+    if (!title || !slug || !body) {
+      return res.status(400).json({ error: 'title, slug, body are required' });
+    }
+    const created = await createPost({ title, slug, excerpt, body });
+    res.status(201).location(`/api/posts/${created.slug}`).json(created);
+  } catch (err) {
+    if (err?.code === '23505') return res.status(409).json({ error: 'Slug already exists' });
+    next(err);
+  }
+}
+
+// PUT /api/posts/:id
+export async function updatePostApi(req, res, next) {
+  try {
+    const id = Number(req.params.id);
+    const found = await getPostById(id);
+    if (!found) return res.status(404).json({ error: 'Not found' });
+    const { title, slug, excerpt = '', body } = req.body;
+    if (!title || !slug || !body) {
+      return res.status(400).json({ error: 'title, slug, body are required' });
+    }
+    const updated = await updatePost(id, { title, slug, excerpt, body });
+    res.json(updated);
+  } catch (err) {
+    if (err?.code === '23505') return res.status(409).json({ error: 'Slug already exists' });
+    next(err);
+  }
+}
+
+// DELETE /api/posts/:id
+export async function deletePostApi(req, res, next) {
+  try {
+    const id = Number(req.params.id);
+    const found = await getPostById(id);
+    if (!found) return res.status(404).json({ error: 'Not found' });
+    await deletePost(id);
+    res.status(204).end();
   } catch (err) { next(err); }
-};
+}
+
+/* --------------------------- GET BLOG POSTS --------------------------- */
+
+// GET /blog
+export async function listPostsPage(_req, res, next) {
+  try {
+    const posts = await getAllPosts();
+    res.render('blog', { title: 'Blog', posts });   // renders EJS list
+  } catch (err) { next(err); }
+}
+
+// GET /blog/:slug
+export async function singlePostPage(req, res, next) {
+  try {
+    const post = await getPostBySlug(req.params.slug);
+    if (!post) return res.status(404).render('index', { title: 'Not found', posts: [] });
+    res.render('post', { title: post.title, post }); // renders EJS single
+  } catch (err) { next(err); }
+}

@@ -1,0 +1,24 @@
+<!-- views/partials/post-hero.ejs -->
+<article class="post-hero">
+    <a class="post-media" href="/posts/<%= post.slug %>">
+        <% if (post.cover_image_url) { %>
+            <img src="<%= post.cover_image_url %>" alt="<%= post.title %> cover">
+            <% } %>
+    </a>
+    <div class="post-content">
+        <h3 class="post-title">
+            <a href="/posts/<%= post.slug %>">
+                <%= post.title %>
+            </a>
+        </h3>
+
+        <% const d=post.published_at ? new Date(post.published_at) : null; %>
+            <div class="post-meta">
+                <% if (d && !isNaN(d)) { %>
+                    <time datetime="<%= d.toISOString() %>">
+                        <%= d.toLocaleDateString('en-IL', { year: 'numeric' , month: 'short' , day: 'numeric' }) %>
+                    </time>
+                    <% } %>
+            </div>
+    </div>
+</article>

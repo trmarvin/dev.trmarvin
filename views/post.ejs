@@ -1,9 +1,14 @@
-    <article>
-        <h1>
-            <%= post.title %>
-        </h1>
-        <p><small>
-                <%= new Date(post.published_at).toLocaleString() %>
-            </small></p>
-        <div><%- post.body %></div>
-    </article>
+<article class="post">
+    <h1>
+        <%= post.title %>
+    </h1>
+    <p><em>
+            <%= new Date(post.published_at).toLocaleString() %>
+        </em></p>
+    <% if (post.excerpt) { %>
+        <p><strong>
+                <%= post.excerpt %>
+            </strong></p>
+        <% } %>
+            <div class="post-body"><%- post.body %></div>
+</article>

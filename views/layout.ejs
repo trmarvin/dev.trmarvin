@@ -20,15 +20,46 @@
 </head>
 
 <body>
-    <header>
-        <nav>
-            <a href="/">dev.trmarvin</a> · <a href="/blog">Blog</a>
-        </nav>
-    </header>
+  
+<header class="site-header">
+    <div class="container header-inner">
+        <!-- 1) Left -->
+        <a class="logo" href="/">dev.trmarvin</a>
 
-    <main class="wrap flow">
+        <!-- 2) Center -->
+        <nav id="site-nav" class="nav" aria-label="Primary">
+            <ul>
+                <% const navItems=[ { href: '/' , label: 'Home' }, { href: '/blog' , label: 'Blog' }, {
+                    href: '/projects' , label: 'Projects' }, { href: '/about' , label: 'About' }, ]; %>
+                    <% navItems.forEach(item=> {
+                        const isActive = path === item.href || (item.href !== '/' && path.startsWith(item.href));
+                        %>
+                        <li>
+                            <a href="<%= item.href %>" class="<%= isActive ? 'active' : '' %>" <%=isActive
+                                ? 'aria-current="page"' : '' %>>
+                                <%= item.label %>
+                            </a>
+                        </li>
+                        <% }) %>
+            </ul>
+        </nav>
+
+        <!-- 3) Right -->
+        <div class="header-actions">
+            <button class="theme-toggle" aria-label="Toggle theme">◐</button>
+            <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav"
+                aria-label="Toggle navigation">☰</button>
+        </div>
+    </div>
+</header>
+
+
+    <main class="container">
         <%- body %> <!-- required by express-ejs-layouts -->
     </main>
+
+    <script src="/js/nav.js" defer></script>
+    <script src="/js/theme.js" defer></script>
 
     <!-- Optional per-page scripts -->
     <% if (typeof pageScripts !=='undefined' && Array.isArray(pageScripts)) { pageScripts.forEach(src=> { %>

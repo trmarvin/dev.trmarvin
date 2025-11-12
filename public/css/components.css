@@ -1,9 +1,9 @@
-/* =========================
-   COMPONENTS – reusable UI
-   ========================= */
+/* ======================================
+   COMPONENTS – reusable UI 
+   ====================================== */
 
-/* Header / Nav */
-header {
+/* ---------- Header / Nav ---------- */
+.site-header {
     position: sticky;
     top: 0;
     z-index: 40;
@@ -12,54 +12,158 @@ header {
     backdrop-filter: blur(6px);
 }
 
-header .wrap {
-    display: flex;
+/* Use grid inside the same .container wrapper */
+.header-inner {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    /* logo | nav | actions */
     align-items: center;
-    justify-content: space-between;
-    padding: .8rem 0;
+    gap: var(--space-3);
+    padding: var(--space-3) 0;
 }
 
-.brand {
-    display: flex;
-    align-items: center;
-    gap: .6rem;
-    text-decoration: none;
-    color: inherit;
+/* Center nav in the middle column */
+.nav {
+    justify-self: center;
+}
+
+/* Brand logo (background image) */
+.logo {
+    --logo-size: 50px;
+    /* tweak 32–48px */
+    display: inline-block;
+    min-height: var(--logo-size);
+    line-height: var(--logo-size);
+    padding-left: calc(var(--logo-size) + .5rem);
+    margin-right: var(--space-2);
     font-weight: 800;
+    letter-spacing: .2px;
+    background:
+        url('/dev_images/dev-avatar-teal.png') no-repeat left center / var(--logo-size) var(--logo-size);
 }
 
-.brand .logo {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 1px solid var(--border);
+/* Center the nav block in the middle column */
+.nav {
+    justify-self: center;
 }
 
-nav ul {
+.nav ul {
     display: flex;
     align-items: center;
-    gap: .35rem;
-    list-style: none;
-    padding: 0;
+    gap: var(--space-3);
     margin: 0;
+    padding: 0;
+    list-style: none;
 }
 
-nav a {
+.nav a {
+    position: relative;
     text-decoration: none;
-    color: inherit;
+    color: var(--ink);
     padding: .35rem .6rem;
     border-radius: var(--radius-sm);
     border: 1px solid transparent;
 }
 
-nav a:hover,
-nav a:focus {
+.nav a:hover,
+.nav a:focus {
     border-color: var(--border);
     background: color-mix(in oklab, var(--teal) 18%, transparent);
 }
 
-/* Buttons */
+.nav a.active {
+    color: var(--teal);
+    font-weight: 700;
+}
+
+.nav a.active::after {
+    content: "";
+    position: absolute;
+    left: .6rem;
+    right: .6rem;
+    bottom: -.2rem;
+    height: 2px;
+    background: var(--teal);
+    border-radius: 2px;
+}
+
+/* Right-side actions (theme + hamburger) */
+.header-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.theme-toggle,
+.nav-toggle {
+    border: 1px solid var(--border);
+    background: transparent;
+    padding: .4rem .6rem;
+    border-radius: 8px;
+}
+
+/* Mobile behavior */
+.nav-toggle {
+    display: none;
+}
+
+@media (max-width: 800px) {
+    .nav-toggle {
+        display: inline-flex;
+    }
+
+    .nav {
+        display: none;
+    }
+
+    .nav.open {
+        display: block;
+        position: absolute;
+        right: var(--space-3);
+        top: calc(var(--space-3) * 2 + 28px);
+        /* adjust if header height changes */
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: var(--space-3);
+        z-index: 100;
+    }
+
+    .nav ul {
+        flex-direction: column;
+        gap: .25rem;
+    }
+}
+
+/* ---------- Hero Section ---------- */
+.hero {
+    padding: calc(var(--space-6) * 1.5) 0 var(--space-6);
+    /* top | sides | bottom → generous vertical rhythm */
+}
+
+.hero h1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin-bottom: var(--space-2);
+}
+
+.hero p {
+    max-width: 60ch;
+    margin-bottom: var(--space-3);
+    color: var(--muted);
+}
+
+.hero a {
+    color: var(--teal);
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+}
+
+/* ---------- Buttons ---------- */
 .btn {
     display: inline-block;
     text-decoration: none;
@@ -89,7 +193,7 @@ nav a:focus {
     color: #0b0f14;
 }
 
-/* Grid / Cards */
+/* ---------- Grid / Cards ---------- */
 .grid {
     --min: 240px;
     display: grid;
@@ -104,14 +208,93 @@ nav a:focus {
     border-radius: var(--radius-md);
     padding: 1rem;
     box-shadow: var(--shadow);
+    transition: transform .12s ease-in-out;
 }
 
 .card:hover {
     transform: translateY(-1px);
-    transition: transform .12s ease-in-out;
 }
 
-/* Footer */
+/* posts */
+.posts-list {
+    display: grid;
+    gap: 1.25rem;
+}
+
+.post-hero {
+    display: grid;
+    gap: .75rem;
+    padding: 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+}
+
+.post-hero .post-media img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+}
+
+/* projects */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+@media (max-width: 900px) {
+    .projects-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-card .project-media img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.project-card .project-body {
+    padding: 1rem;
+    display: grid;
+    gap: .5rem;
+}
+
+.project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem .5rem;
+    list-style: none;
+    padding: 0;
+    margin: .25rem 0 0;
+}
+
+.project-tags li {
+    font-size: .8rem;
+    opacity: .8;
+    border: 1px solid var(--border);
+    padding: .15rem .45rem;
+    border-radius: 999px;
+}
+
+/* ---------- Footer ---------- */
 footer {
     border-top: 1px solid var(--border);
     padding: 1rem 0;
