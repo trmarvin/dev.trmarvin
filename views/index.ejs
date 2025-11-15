@@ -1,79 +1,77 @@
 <!-- Normalization -->
-<% const POSTS=(typeof posts !=='undefined' ) ? posts : ((typeof locals !=='undefined' && locals.posts) ? locals.posts :
-    []); const PROJECTS=(typeof projects !=='undefined' ) ? projects : ((typeof locals !=='undefined' &&
-    locals.projects) ? locals.projects : []); %>
+<% const POSTS=Array.isArray(posts ?? locals.posts) ? (posts ?? locals.posts) : []; const
+    PROJECTS=Array.isArray(projects ?? locals.projects) ? (projects ?? locals.projects) : []; %>
 
-<!-- Hero -->
-<section class="hero">
-  <h1>Hello World—I'm Tamar.</h1>
-  <p>I’m learning full-stack from scratch and documenting what I build, break, and learn.</p>
-  <p>I’ve been tinkering online since the <a href="https://lynx.invisible-island.net/">Lynx</a> era. 
-    I still love the weirdness of the early internet but as a techno-optimist, I look forward to the 
-    possibilities of the future web.</p>
-  <p>After a career in academia, I’m now focused on web development — especially learning tools that 
-    make complex ideas feel approachable and resonant.</p>
+    <!-- Hero -->
+    <section class="hero">
+        <h1>Hello World—I'm Tamar.</h1>
+        <p>I’m learning full-stack from scratch and documenting what I build, break, and learn.</p>
+        <p>I’ve been tinkering online since the <a href="https://lynx.invisible-island.net/">Lynx</a> era.
+            I still love the weirdness of the early internet but as a techno-optimist, I look forward to the
+            possibilities of the future web.</p>
+        <p>After a career in academia, I’m now focused on web development — especially learning tools that
+            make complex ideas feel approachable and resonant.</p>
 
-  <div class="hero-actions">
-    <a class="btn" href="/blog">Read the blog</a>
-    <a class="btn ghost" href="/projects">See projects</a>
-  </div>
-</section>
-
-<!-- views/index.ejs -->
-<body class="home">
-    
-<main class="container">
-
-    <!-- Projects -->
-    <section class="section projects">
-        <header class="section-header">
-            <h2>Projects</h2>
-            <a class="link-more" href="/projects">See all</a>
-        </header>
-
-        <div class="projects-grid">
-
-            <% if (Array.isArray(PROJECTS) && PROJECTS.length) { %>
-                <% PROJECTS.forEach(project=> { %>
-                    <%- include('partials/project-card', { project }) %>
-                <% }) %>
-            <% } else { %>
-                <p>No featured projects yet.</p>
-            <% } %>
+        <div class="hero-actions">
+            <a class="btn" href="/blog">Read the blog</a>
+            <a class="btn ghost" href="/projects">See projects</a>
         </div>
     </section>
 
-    <!-- Latest Blog Posts -->
-    <section class="section posts">
-        <header class="section-header">
-            <h2>Latest posts</h2>
-            <a class="link-more" href="/blog">View all</a>
-        </header>
+    <!-- views/index.ejs -->
 
-        <div class="posts-list">
-            <% const hasPosts=Array.isArray(posts) && posts.length> 0; %>
-            
-                <% if (hasPosts) { %>
-                    <% posts.forEach(post=> { %>
-                        <%- include('partials/post-hero', { post }) %>
-                    <% }) %>
-                <% } else { %>
-                    <p>No posts yet.</p>
-                <% } %>
+    <body class="home">
 
-        </div>
-    </section>
+        <main class="container">
 
-</main>
+            <!-- Projects -->
+            <section class="section projects">
+                <header class="section-header">
+                    <h2>Projects</h2>
+                    <a class="link-more" href="/projects">See all</a>
+                </header>
 
-<!-- Slim CTA strip (optional) -->
-<section class="container" style="padding: var(--space-6) 0;">
-  <p style="margin:0; color: var(--muted);">
-    Want the full build log? <a href="/blog">Browse the blog →</a>
-  </p>
-</section>
-</p>
+                <div class="projects-grid">
 
-</body>
+                    <% if (Array.isArray(PROJECTS) && PROJECTS.length) { %>
+                        <% PROJECTS.forEach(project=> { %>
+                            <%- include('partials/project-card', { project }) %>
+                                <% }) %>
+                                    <% } else { %>
+                                        <p>No featured projects yet.</p>
+                                        <% } %>
+                </div>
+            </section>
 
-</html>
+            <!-- Latest Blog Posts -->
+            <section class="section posts">
+                <header class="section-header">
+                    <h2>Latest posts</h2>
+                    <a class="link-more" href="/blog">View all</a>
+                </header>
+
+                <div class="posts-list">
+                    <% const hasPosts=POSTS.length> 0; %>
+                        <% if (hasPosts) { %>
+                            <% POSTS.forEach(post=> { %>
+                                <%- include('partials/post-hero', { post }) %>
+                                    <% }) %>
+                                        <% } else { %>
+                                            <p>No posts yet.</p>
+                                            <% } %>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Slim CTA strip (optional) -->
+        <section class="container" style="padding: var(--space-6) 0;">
+            <p style="margin:0; color: var(--muted);">
+                Want the full build log? <a href="/blog">Browse the blog →</a>
+            </p>
+        </section>
+        </p>
+
+    </body>
+
+    </html>

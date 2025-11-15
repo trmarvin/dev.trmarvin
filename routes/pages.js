@@ -3,6 +3,7 @@ import { homePage } from '../controllers/homeController.js';
 import { listPostsPage, singlePostPage } from '../controllers/postController.js';
 import { listProjectsPage, singleProjectPage } from '../controllers/projectController.js';
 
+
 const router = Router();
 
 router.get('/', homePage);

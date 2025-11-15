@@ -1,13 +1,13 @@
 <!-- views/partials/post-hero.ejs -->
 <article class="post-hero">
-    <a class="post-media" href="/posts/<%= post.slug %>">
+    <a class="post-media" href="/blog/<%= post.slug %>">
         <% if (post.cover_image_url) { %>
             <img src="<%= post.cover_image_url %>" alt="<%= post.title %> cover">
             <% } %>
     </a>
     <div class="post-content">
         <h3 class="post-title">
-            <a href="/posts/<%= post.slug %>">
+            <a href="/blog/<%= post.slug %>">
                 <%= post.title %>
             </a>
         </h3>

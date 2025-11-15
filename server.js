@@ -53,21 +53,37 @@ app.use(express.static(path.join(process.cwd(), 'public')));
 // Health check -> for future deployment
 app.get('/healthz', (_req, res) => res.send('ok'));
 
-// 404 handler
+// 404 handler (AFTER all routes)
 app.use((req, res) => {
   if (req.path.startsWith('/api')) {
     return res.status(404).json({ error: 'Not found' });
   }
-  res.status(404).render('index', { title: 'Not found' });
+  res.status(404).type('text').send('Not found');
 });
 
-// 500 handler
-app.use((err, req, res, _next) => {
-  console.error(err);
+// 500 handler (LAST; note 4 args)
+app.use((err, req, res, next) => {
+  // If headers already sent, delegate to Express' default
+  if (res.headersSent) return next(err);
+
+  // Log full error (stack in dev)
+  console.error(err && err.stack ? err.stack : err);
+
   if (req.path.startsWith('/api')) {
-    return res.status(500).json({ error: 'Server error' });
+    return res.status(500).json({
+      error: 'Server error',
+      // include message in dev only
+      ...(process.env.NODE_ENV !== 'production' && { detail: String(err?.message || err) }),
+    });
   }
-  res.status(500).send('Server error');
+
+  // Plain text response, no templates
+  const body =
+    process.env.NODE_ENV !== 'production'
+      ? `Server error\n\n${err && err.stack ? err.stack : String(err)}`
+      : 'Server error';
+
+  res.status(500).type('text').send(body);
 });
 
 // DB init last before listen
