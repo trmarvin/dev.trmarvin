@@ -2,7 +2,7 @@
    BASE – resets + typography + layout
    ========================= */
 
-
+/* Reset + base element behavior */
 *,
 *::before,
 *::after {
@@ -13,8 +13,21 @@
     margin: 0;
 }
 
+html,
+body {
+    height: 100%;
+}
+
+html {
+    color-scheme: dark light;
+}
+
 html:focus-within {
     scroll-behavior: smooth;
+}
+
+:target {
+    scroll-margin-top: 6rem;
 }
 
 img,
@@ -33,27 +46,7 @@ select {
     font: inherit;
 }
 
-:target {
-    scroll-margin-top: 6rem;
-}
-
-html {
-    color-scheme: dark light;
-}
-
-:focus-visible {
-    outline: 2px solid var(--teal);
-    outline-offset: 2px;
-}
-
-/* Universal page gutters + max width */
-.container {
-    max-width: var(--max, 1100px);
-    margin: 0 auto;
-    padding: 0 var(--space-3, 1rem);
-    box-sizing: border-box;
-}
-
+/* Base body styles */
 body {
     background: var(--bg);
     color: var(--ink);
@@ -64,19 +57,15 @@ body {
     text-rendering: optimizeLegibility;
 }
 
-.wrap {
-    width: min(var(--wrap, 960px), 92vw);
-    margin-inline: auto;
-    padding: var(--space-5, 24px) var(--space-6, 32px);
+/* Focus styles */
+:focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 2px;
 }
 
-.prose {
-    max-width: var(--prose);
-}
-
-.flow>*+* {
-    margin-top: var(--space-4);
-}
+/* -------------------------
+   TYPOGRAPHY
+   ------------------------- */
 
 a {
     color: var(--link);
@@ -135,12 +124,156 @@ code {
     border: 1px solid var(--border);
 }
 
+/* -------------------------
+   LAYOUT UTILITIES
+   ------------------------- */
+
+/* Universal page gutters + max width */
+.container {
+    max-width: var(--max, 1100px);
+    margin: 0 auto;
+    padding: 0 var(--space-3, 1rem);
+    box-sizing: border-box;
+    /* technically redundant with *, but fine */
+}
+
+.section {
+    padding-block: var(--space-8);
+}
+
+.section.hero {
+    padding-block: var(--space-8) var(--space-7);
+}
+
+.wrap {
+    width: min(var(--wrap, 960px), 92vw);
+    margin-inline: auto;
+    padding: var(--space-5, 24px) var(--space-6, 32px);
+}
+
+.prose {
+    max-width: var(--prose);
+}
+
+.flow>*+* {
+    margin-top: var(--space-4);
+}
+
+/* Grid helpers */
+.grid {
+    display: grid;
+    gap: var(--space-5);
+}
+
+.grid.cols-3 {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+/* -------------------------
+   SITE CHROME
+   ------------------------- */
+
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(8px);
+    background: color-mix(in oklab, var(--bg) 75%, transparent);
+    border-bottom: 1px solid #141a21;
+}
+
+.head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: .8rem;
+}
+
+.logo {
+    font-weight: 700;
+    letter-spacing: .3px;
+    text-decoration: none;
+    color: var(--ink);
+}
+
+.nav {
+    display: flex;
+    gap: var(--space-4);
+    align-items: center;
+}
+
+.nav a {
+    text-decoration: none;
+    color: var(--ink);
+    opacity: .85;
+}
+
+.nav a:hover {
+    opacity: 1;
+}
+
 /* .nav a.active {
     color: var(--teal);
     font-weight: 600;
 } */
 
-/* The clickable frame */
+.hero .lede {
+    font-size: var(--fs-lg);
+    color: var(--muted);
+    max-width: 65ch;
+}
+
+.hero-actions {
+    display: flex;
+    gap: var(--space-4);
+    margin-top: var(--space-5);
+    align-items: center;
+}
+
+/* -------------------------
+   COMPONENTS
+   ------------------------- */
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .6rem 1rem;
+    border-radius: var(--r-lg);
+    background: color-mix(in oklab, var(--teal) 20%, transparent);
+    border: 1px solid color-mix(in oklab, var(--teal) 55%, transparent);
+    transition:
+        transform var(--dur-1) var(--ease),
+        background var(--dur-1) var(--ease);
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    background: color-mix(in oklab, var(--teal) 30%, transparent);
+}
+
+/* Cards */
+.card {
+    background: linear-gradient(180deg,
+            color-mix(in oklab, var(--surface) 85%, transparent),
+            var(--surface));
+    border: 1px solid #1a2028;
+    border-radius: var(--r-xl);
+    padding: var(--s-5);
+    transition:
+        transform var(--dur-2) var(--ease),
+        box-shadow var(--dur-2) var(--ease),
+        border-color var(--dur-2) var(--ease);
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-1);
+    border-color: #26303c;
+}
+
+/* Media frames */
 .project-media {
     display: block;
     width: 100%;
@@ -148,16 +281,48 @@ code {
     /* pick 4/3 or 1/1 if you prefer */
     overflow: hidden;
     border-radius: 12px;
-    /* optional */
     background: #111;
     /* shows while image loads or if missing */
 }
 
-/* Make the image fill the frame without distortion */
 .project-media img {
     width: 100%;
     height: 100%;
     display: block;
     object-fit: cover;
     /* fills & crops excess; use 'contain' to avoid cropping */
+}
+
+.thumb {
+    aspect-ratio: 16 / 10;
+    width: 100%;
+    border-radius: var(--r-lg);
+    object-fit: cover;
+    background: #0d1319;
+}
+
+/* -------------------------
+   ACCESSIBILITY & PREFS
+   ------------------------- */
+
+.skip-link {
+    position: absolute;
+    left: -9999px;
+    top: auto;
+}
+
+.skip-link:focus {
+    left: 1rem;
+    top: 1rem;
+    z-index: 1000;
+    background: #000;
+    padding: .5rem 1rem;
+    border-radius: 8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
 }

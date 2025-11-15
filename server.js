@@ -7,6 +7,9 @@ import admin from './routes/admin.js';
 import './config/db.js';
 import expressLayouts from 'express-ejs-layouts';
 import cors from 'cors';
+import helmet from "helmet";
+import compression from "compression";
+import { rateLimit } from "express-rate-limit";
 
 const app = express();
 
@@ -49,6 +52,22 @@ app.use('/', pages);
 app.use('/api', api);
 app.use('/admin', admin);
 app.use(express.static(path.join(process.cwd(), 'public')));
+
+// Helmet & other security features
+app.use(helmet({ contentSecurityPolicy: false }));
+app.use(compression());
+
+// Only rate-limit sensitive endpoints
+const sensitiveLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 50,
+});
+
+app.use("/admin", sensitiveLimiter);
+
+// static cache
+app.use(express.static("public", { maxAge: "7d", etag: true }));
+
 
 // Health check -> for future deployment
 app.get('/healthz', (_req, res) => res.send('ok'));
