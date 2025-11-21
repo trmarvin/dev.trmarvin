@@ -20,6 +20,9 @@ body {
 
 html {
     color-scheme: dark light;
+    font-family: var(--font-body-family);
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
 }
 
 html:focus-within {
@@ -50,7 +53,7 @@ select {
 body {
     background: var(--bg);
     color: var(--ink);
-    font-family: var(--ff-sans);
+    font-family: var(--font-body-family);
     line-height: 1.6;
     font-size: var(--fs-0);
     -webkit-font-smoothing: antialiased;
@@ -89,19 +92,14 @@ h3 {
     letter-spacing: .2px;
 }
 
-h1 {
-    font-size: var(--fs-4);
-    margin-bottom: var(--space-3);
-}
-
-h2 {
-    font-size: var(--fs-3);
-    margin: var(--space-6) 0 var(--space-2);
-}
-
-h3 {
-    font-size: var(--fs-2);
-    margin: var(--space-4) 0 var(--space-2);
+h1,
+h2,
+h3,
+h4 {
+    font-family: var(--font-display-family);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: .2px;
 }
 
 ul,
@@ -190,16 +188,18 @@ code {
 }
 
 .logo {
+    font-family: var(--font-display-family);
     font-weight: 700;
     letter-spacing: .3px;
     text-decoration: none;
     color: var(--ink);
 }
 
-.nav {
-    display: flex;
-    gap: var(--space-4);
-    align-items: center;
+.nav a {
+    font-family: var(--font-body-family);
+    text-decoration: none;
+    color: var(--ink);
+    opacity: .85;
 }
 
 .nav a {
@@ -260,7 +260,7 @@ code {
             var(--surface));
     border: 1px solid #1a2028;
     border-radius: var(--r-xl);
-    padding: var(--s-5);
+    padding: var(--space-5);
     transition:
         transform var(--dur-2) var(--ease),
         box-shadow var(--dur-2) var(--ease),

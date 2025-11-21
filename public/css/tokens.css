@@ -32,8 +32,16 @@
     --max: 1100px;
 
     /* Font families */
+    --font-body-family: "Inter", system-ui, sans-serif;
+    --font-display-family: "Space Grotesk", system-ui, sans-serif;
     --ff-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Inter, Roboto, Arial, "Noto Sans";
     --ff-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+    /* Heading sizes, mapped to base scale */
+    --font-h1: var(--fs-4);
+    --font-h2: var(--fs-3);
+    --font-h3: var(--fs-2);
+    --font-h4: var(--fs-1);
 
     /* Base type scale (used for body + h1–h3) */
     --fs-0: clamp(.94rem, .9rem + .2vw, 1rem);
