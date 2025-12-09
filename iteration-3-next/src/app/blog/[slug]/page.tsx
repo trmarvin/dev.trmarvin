@@ -1,56 +1,31 @@
-import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { prisma } from "@/lib/db";
+// app/blog/[slug]/page.tsx
+import { notFound } from 'next/navigation';
+import ReactMarkdown from 'react-markdown';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { prisma } from '@/lib/prisma';
+import { Markdown } from "@/components/Markdown";
 
-type BlogPostPageProps = {
-    params: Promise<{ slug: string }>;
-};
-
-export async function generateMetadata(
-    { params }: BlogPostPageProps
-): Promise<Metadata> {
-    const { slug } = await params;
-
-    const post = await prisma.post.findUnique({
-        where: { slug },
-        select: { title: true },
-    });
-
-    if (!post) {
-        return { title: "Post not found – dev.trmarvin" };
-    }
-
-    return { title: `${post.title} – dev.trmarvin` };
+interface PostPageProps {
+    params: { slug: string };
 }
 
-export default async function BlogPostPage({ params }: BlogPostPageProps) {
-    const { slug } = await params;
-
+export default async function PostPage({ params }: PostPageProps) {
     const post = await prisma.post.findUnique({
-        where: { slug },
+        where: { slug: params.slug },
     });
 
-    if (!post) {
+    if (!post || !post.published) {
         notFound();
     }
 
     return (
-        <article className="space-y-6">
-            <header className="space-y-2">
-                <p className="text-xs font-medium uppercase tracking-[0.2em] text-emerald-300">
-                    Blog post
-                </p>
-                <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-                    {post.title}
-                </h1>
-                {post.excerpt && (
-                    <p className="max-w-2xl text-sm text-slate-300">{post.excerpt}</p>
-                )}
-            </header>
+        <article className="prose prose-invert max-w-3xl mx-auto py-12">
+            <h1>{post.title}</h1>
+            {post.excerpt && <p className="text-muted-foreground">{post.excerpt}</p>}
 
-            <section className="prose prose-invert max-w-none">
-                <p>{post.content}</p>
-            </section>
+            <Markdown>{post.content}</Markdown>
+
         </article>
     );
 }

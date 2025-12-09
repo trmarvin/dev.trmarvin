@@ -1,36 +1,35 @@
 import Link from "next/link";
-import { prisma } from "@/lib/db";
+import { notFound } from "next/navigation";
+import ReactMarkdown from "react-markdown";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { prisma } from "@/lib/prisma";   // Adjust this path to however your project organizes Prisma
+import type { Post } from "@prisma/client";
 
 export default async function BlogIndexPage() {
-    const posts = await prisma.post.findMany({
+    const posts: Post[] = await prisma.post.findMany({
+        where: { published: true },
         orderBy: { createdAt: "desc" },
     });
 
     return (
-        <section className="space-y-6">
-            <h1 className="text-3xl font-semibold tracking-tight">Blog</h1>
+        <main className="max-w-3xl mx-auto py-12">
+            <h1 className="text-3xl font-semibold mb-6">Blog</h1>
 
-            {posts.length === 0 ? (
-                <p className="text-sm text-slate-400">No posts yet.</p>
-            ) : (
-                <ul className="space-y-4">
-                    {posts.map((post) => (
-                        <li
-                            key={post.id}
-                            className="rounded-lg border border-slate-800 bg-slate-900/40 p-4"
-                        >
-                            <Link href={`/blog/${post.slug}`} className="block space-y-1">
-                                <h2 className="text-base font-semibold text-slate-50">
-                                    {post.title}
-                                </h2>
-                                {post.excerpt && (
-                                    <p className="text-sm text-slate-300">{post.excerpt}</p>
-                                )}
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
-            )}
-        </section>
+            {posts.length === 0 && <p>No posts yet.</p>}
+
+            <ul className="space-y-4">
+                {posts.map((post: Post) => (
+                    <li key={post.id}>
+                        <Link href={`/blog/${post.slug}`} className="text-lg font-medium">
+                            {post.title}
+                        </Link>
+                        {post.excerpt && (
+                            <p className="text-sm text-muted-foreground">{post.excerpt}</p>
+                        )}
+                    </li>
+                ))}
+            </ul>
+        </main>
     );
 }
