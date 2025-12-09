@@ -6,14 +6,14 @@ import type { Project } from "@prisma/client";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 
-type ProjectPageProps = {
-    params: { slug: string };
+type ProjectParams = {
+    slug: string;
 };
 
 // --- Data helper -------------------------------------------------------------
 
 async function getProject(slug: string): Promise<Project | null> {
-    return prisma.project.findFirst({
+    return prisma.project.findUnique({
         where: { slug },
     });
 }
@@ -21,9 +21,11 @@ async function getProject(slug: string): Promise<Project | null> {
 // --- Metadata ---------------------------------------------------------------
 
 export async function generateMetadata(
-    { params }: ProjectPageProps
+    { params }: { params: Promise<ProjectParams> }
 ): Promise<Metadata> {
-    const project = await getProject(params.slug);
+    const { slug } = await params;           // 👈 unwrap params
+
+    const project = await getProject(slug);
 
     if (!project) {
         return {
@@ -54,8 +56,12 @@ export async function generateMetadata(
 
 // --- Page -------------------------------------------------------------------
 
-export default async function ProjectPage({ params }: ProjectPageProps) {
-    const project = await getProject(params.slug);
+export default async function ProjectPage(
+    { params }: { params: Promise<ProjectParams> }
+) {
+    const { slug } = await params;           // 👈 unwrap params here too
+
+    const project = await getProject(slug);
 
     if (!project) {
         notFound();
@@ -79,10 +85,17 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     };
 
     const badgeClass =
-        status && statusColors[status] ? statusColors[status] : statusColors["featured"];
+        status && statusColors[status]
+            ? statusColors[status]
+            : statusColors["featured"];
 
     return (
         <main className="mx-auto flex max-w-3xl flex-col gap-10 px-4 py-10 sm:px-6 lg:px-0">
+            {/* Debug – you can delete this once everything looks correct */}
+            <p className="text-xs text-cyan-300">
+                DEBUG – slug from URL: {slug} | project.slug: {project.slug}
+            </p>
+
             {/* Back link */}
             <div>
                 <Link
@@ -152,23 +165,25 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                 {content ? (
                     <article className="space-y-4 text-sm leading-relaxed text-slate-200">
                         {content
-                            .split(/\n{2,}/) // split on blank lines → simple paragraphs
+                            .split(/\n{2,}/)
                             .map((block, index) => (
                                 <p key={index}>{block.trim()}</p>
                             ))}
                     </article>
                 ) : (
-                    <p className="text-sm text-slate-400/90">
-                        Case study coming soon. In the meantime, this project is included
-                        in the grid on the{" "}
-                        <Link
-                            href="/projects"
-                            className="underline decoration-slate-500 underline-offset-2 hover:text-cyan-300 hover:decoration-cyan-500"
-                        >
-                            projects page
-                        </Link>
-                        .
-                    </p>
+                    <>
+                        <p className="text-sm text-slate-400/90">
+                            Case study coming soon. In the meantime, this project is included
+                            in the grid on the{" "}
+                            <Link
+                                href="/projects"
+                                className="underline decoration-slate-500 underline-offset-2 hover:text-cyan-300 hover:decoration-cyan-500"
+                            >
+                                projects page
+                            </Link>
+                            .
+                        </p>
+                    </>
                 )}
             </section>
         </main>
