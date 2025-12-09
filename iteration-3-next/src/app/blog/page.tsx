@@ -3,33 +3,46 @@ import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { prisma } from "@/lib/prisma";   // Adjust this path to however your project organizes Prisma
 import type { Post } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
+import { BlogCard } from "@/components/blog/BlogCard";
 
 export default async function BlogIndexPage() {
-    const posts: Post[] = await prisma.post.findMany({
-        where: { published: true },
-        orderBy: { createdAt: "desc" },
+    const posts = await prisma.post.findMany({
+        where: { published: true },                // only published posts
+        orderBy: { createdAt: "desc" },            // newest first
+        select: {
+            slug: true,
+            title: true,
+            excerpt: true,                              // if you have this field
+            createdAt: true,                         // we’ll use later for date display
+        },
     });
 
     return (
-        <main className="max-w-3xl mx-auto py-12">
-            <h1 className="text-3xl font-semibold mb-6">Blog</h1>
+        <section className="space-y-6">
+            <header className="space-y-2">
+                <h1 className="text-3xl font-semibold tracking-tight text-slate-50">
+                    Blog
+                </h1>
+                <p className="max-w-xl text-sm text-slate-300/90">
+                    Notes from the dev side of my life – builds, bugs, and experiments.
+                </p>
+            </header>
 
-            {posts.length === 0 && <p>No posts yet.</p>}
-
-            <ul className="space-y-4">
-                {posts.map((post: Post) => (
-                    <li key={post.id}>
-                        <Link href={`/blog/${post.slug}`} className="text-lg font-medium">
-                            {post.title}
-                        </Link>
-                        {post.excerpt && (
-                            <p className="text-sm text-muted-foreground">{post.excerpt}</p>
-                        )}
-                    </li>
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                {posts.map((post) => (
+                    <BlogCard
+                        key={post.slug}
+                        post={{
+                            slug: post.slug,
+                            title: post.title,
+                            excerpt: post.excerpt,
+                            // we’ll hook createdAt into meta soon
+                        }}
+                    />
                 ))}
-            </ul>
-        </main>
+            </div>
+        </section>
     );
 }
