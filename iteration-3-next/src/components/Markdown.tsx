@@ -1,4 +1,4 @@
-// components/Markdown.tsx
+// src/components/Markdown.tsx
 "use client";
 
 import React from "react";
@@ -13,34 +13,35 @@ type MarkdownProps = {
 
 export function Markdown({ children, className }: MarkdownProps) {
     return (
-        <ReactMarkdown
-            className={className}
-            components={{
-                code(codeProps) {
-                    const { children, className, inline, ...rest } = codeProps as any;
-                    const match = /language-(\w+)/.exec(className || "");
+        <div className={className}>
+            <ReactMarkdown
+                components={{
+                    code(codeProps) {
+                        const { children, className, inline, ...rest } = codeProps as any;
+                        const match = /language-(\w+)/.exec(className || "");
 
-                    if (!inline && match) {
+                        if (!inline && match) {
+                            return (
+                                <SyntaxHighlighter
+                                    style={oneDark as any}
+                                    language={match[1]}
+                                    PreTag="div"
+                                >
+                                    {String(children).replace(/\n$/, "")}
+                                </SyntaxHighlighter>
+                            );
+                        }
+
                         return (
-                            <SyntaxHighlighter
-                                style={oneDark as any}
-                                language={match[1]}
-                                PreTag="div"
-                            >
-                                {String(children).replace(/\n$/, "")}
-                            </SyntaxHighlighter>
+                            <code className={className} {...rest}>
+                                {children}
+                            </code>
                         );
-                    }
-
-                    return (
-                        <code className={className} {...rest}>
-                            {children}
-                        </code>
-                    );
-                },
-            }}
-        >
-            {children}
-        </ReactMarkdown>
+                    },
+                }}
+            >
+                {children}
+            </ReactMarkdown>
+        </div>
     );
 }

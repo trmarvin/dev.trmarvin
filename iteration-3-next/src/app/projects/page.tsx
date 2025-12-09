@@ -1,28 +1,33 @@
-// src/app/projects/[slug]/page.tsx
-import { notFound } from "next/navigation";
-import { Markdown } from "@/components/Markdown";
-import { getProjectBySlug } from "@/lib/projects";
+// src/app/projects/page.tsx
+import Link from "next/link";
+import { projects } from "@/lib/projects";
 
-type Props = { params: Promise<{ slug: string }> };
-
-export default async function ProjectPage({ params }: Props) {
-    // 👇 unwrap the promise first
-    const { slug } = await params;
-
-    const project = await getProjectBySlug(slug);
-    if (!project) return notFound();
-
+export default function ProjectsPage() {
     return (
         <main className="main">
-            <article className="prose">
-                <header className="case-header">
-                    <p className="case-kicker">Case study</p>
-                    <h1>{project.title}</h1>
-                    <p className="case-summary">{project.summary}</p>
-                </header>
+            <section className="prose">
+                <h1>Projects</h1>
+                <p>
+                    Selected projects that showcase my work across front-end, full-stack,
+                    and WordPress/React.
+                </p>
 
-                <Markdown>{project.content}</Markdown>
-            </article>
+                <div className="projects-grid">
+                    {projects.map((project) => (
+                        <article key={project.slug} className="project-card">
+                            <h2>
+                                <Link href={`/projects/${project.slug}`}>
+                                    {project.title}
+                                </Link>
+                            </h2>
+                            <p>{project.summary}</p>
+                            <p className="project-meta">
+                                {project.stack.join(" · ")}
+                            </p>
+                        </article>
+                    ))}
+                </div>
+            </section>
         </main>
     );
 }

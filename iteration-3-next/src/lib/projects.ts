@@ -6,7 +6,7 @@ export type Project = {
     tagline: string;
     stack: string[];
     summary: string;
-    content: string; // markdown body for the case study
+    content: string; // markdown body
 };
 
 export const projects: Project[] = [
@@ -24,7 +24,7 @@ Kosher World Kitchen is my custom WordPress block theme plus a React faceted sea
 
 - Custom Gutenberg block theme
 - Taxonomy-driven recipe architecture
-- Front-end React grid powered by the WordPress REST API
+- React grid powered by the WordPress REST API
 
 \`\`\`tsx
 // Example snippet
@@ -48,20 +48,12 @@ fetch("/wp-json/kwk/v1/recipes?region=asia")
 This iteration of dev.trmarvin is a full-stack Next.js app with a Prisma/Postgres backend.
 
 - App Router + server components
-- Prisma for typed database access
-- Markdown-based blog content with syntax highlighting
-
-\`\`\`ts
-// Example Prisma query
-const post = await prisma.post.findUnique({
-  where: { slug },
-});
-\`\`\`
+- Prisma for typed DB access
+- Markdown-based content with syntax highlighting
     `.trim(),
     },
 ];
 
-// used by [slug]/page.tsx
 export async function getProjectBySlug(slug: string): Promise<Project | null> {
     const project = projects.find((p) => p.slug === slug);
     return project ?? null;

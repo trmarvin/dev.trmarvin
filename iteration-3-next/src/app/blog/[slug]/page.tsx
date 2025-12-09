@@ -1,31 +1,37 @@
-// app/blog/[slug]/page.tsx
-import { notFound } from 'next/navigation';
-import ReactMarkdown from 'react-markdown';
+import { notFound } from "next/navigation";
+import { prisma } from "@/lib/prisma";
+import { Markdown } from "@/components/Markdown";
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { prisma } from '@/lib/prisma';
-import { Markdown } from "@/components/Markdown";
 
-interface PostPageProps {
-    params: { slug: string };
-}
+type PostPageProps = {
+    params: Promise<{ slug: string }>;
+};
 
 export default async function PostPage({ params }: PostPageProps) {
+    // ⬅️ unwrap the Promise Next 16 gives you
+    const { slug } = await params;
+
     const post = await prisma.post.findUnique({
-        where: { slug: params.slug },
+        where: { slug },
     });
 
-    if (!post || !post.published) {
-        notFound();
+    if (!post) {
+        return notFound();
     }
 
     return (
-        <article className="prose prose-invert max-w-3xl mx-auto py-12">
-            <h1>{post.title}</h1>
-            {post.excerpt && <p className="text-muted-foreground">{post.excerpt}</p>}
+        <main className="main">
+            <article className="prose">
+                <header className="post-header">
+                    <h1>{post.title}</h1>
+                    {/* put publish date + reading time here later */}
+                </header>
 
-            <Markdown>{post.content}</Markdown>
-
-        </article>
+                {/* however you currently render content */}
+                {/* If content is markdown: */}
+                {/* <Markdown>{post.content}</Markdown> */}
+            </article>
+        </main>
     );
 }
