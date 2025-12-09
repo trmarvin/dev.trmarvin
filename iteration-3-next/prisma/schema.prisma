@@ -20,3 +20,18 @@ model Post {
   updatedAt DateTime @updatedAt
   published Boolean  @default(true)
 }
+
+model Project {
+  id        Int      @id @default(autoincrement())
+  slug      String   @unique
+  title     String
+  summary   String?
+  content   String?  // markdown case study text (optional)
+  year      Int?
+  role      String?
+  status    String?  // e.g. "in-progress", "live", "archived"
+  techStack String[] @default([])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
