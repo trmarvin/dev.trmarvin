@@ -9,7 +9,7 @@ type BlogPostPageProps = {
 export async function generateMetadata(
     { params }: BlogPostPageProps
 ): Promise<Metadata> {
-    const { slug } = await params; // 👈 unwrap the Promise
+    const { slug } = await params;
 
     const post = await prisma.post.findUnique({
         where: { slug },
@@ -24,7 +24,7 @@ export async function generateMetadata(
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
-    const { slug } = await params; // 👈 unwrap the Promise
+    const { slug } = await params;
 
     const post = await prisma.post.findUnique({
         where: { slug },
