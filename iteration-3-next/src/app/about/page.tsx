@@ -15,7 +15,7 @@ export default function AboutPage() {
 
             <div className="prose prose-neutral max-w-none">
                 <p>
-                    I’m Tamar Marvin — a developer with a background in scholarship,
+                    I’m Tamar Ron Marvin — a developer with a background in scholarship,
                     focused on building thoughtful, well-structured digital
                     systems for complex ideas. I am also trained in graphic design
                     and interested in UI/UX.
@@ -34,10 +34,8 @@ export default function AboutPage() {
                     as they evolve.
                 </p>
 
-                <h1>Elswhere</h1>
-                <a href="https://github.com/trmarvin">GitHub</a> |
-                <a rel="me" href="https://hachyderm.io/@trmarvin">Mastodon (dev)</a> |
-                <a rel="me" href="https://babka.social/@trmarvin">Mastodon (writing)</a>
+                <h3>Elswhere</h3>
+                <a href="https://github.com/trmarvin">GitHub</a> | <a rel="me" href="https://hachyderm.io/@trmarvin">Mastodon (dev)</a> | <a rel="me" href="https://babka.social/@trmarvin">Mastodon (writing)</a>
             </div>
         </main>
     );

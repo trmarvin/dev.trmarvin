@@ -16,8 +16,7 @@ export default function HomePage() {
           deep dive into code, craft, and learning.</p>
 
         <p className="max-w-2xl text-sm leading-relaxed sm:text-base">
-          I’ve been tinkering online since the
-          <a href="https://lynx.invisible-island.net/">Lynx</a> era.
+          I’ve been tinkering online since the <a href="https://lynx.invisible-island.net/">Lynx</a> era.
           I still love the weirdness of the early internet but as a techno-optimist,
           I look forward to the possibilities of the future web. After a career in
           academia, I’m now focused on web development — especially learning tools

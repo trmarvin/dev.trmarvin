@@ -22,11 +22,13 @@ export default function RootLayout({
 
             <header className="border-b border-slate-800 bg-slate-950/80 backdrop-blur">
               <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
-                <a href="/" className="text-sm font-semibold tracking-tight">
-                  dev.<span className="text-accent">trmarvin</span>
+                <a href="/" className="text-sm tracking-tight">
+                  <span className="brand-prefix">dev.</span>
+                  <span className="brand-name">trmarvin</span>
                 </a>
 
-                <nav className="flex items-center gap-5 text-sm text-slate-300">
+
+                <nav className="flex items-center gap-5 text-sm font-medium text-slate-300">
                   <a href="/" className="hover:text-accent">
                     Home
                   </a>

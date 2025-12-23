@@ -1,4 +1,4 @@
-// app/admin/posts/new/page.tsx
+// src/app/admin/posts/new/page.tsx
 'use client';
 
 import { useState } from 'react';
@@ -10,7 +10,7 @@ export default function NewPostPage() {
     const [content, setContent] = useState('');
     const [status, setStatus] = useState<string | null>(null);
 
-    async function handleSubmit(e: React.FormEvent) {
+    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         setStatus('Saving…');
 
@@ -18,19 +18,22 @@ export default function NewPostPage() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'x-admin-token': process.env.NEXT_PUBLIC_ADMIN_TOKEN!,
+                // If your API route checks this header, keep it.
+                // Otherwise, remove it.
+                'x-admin-token': process.env.NEXT_PUBLIC_ADMIN_TOKEN ?? '',
             },
             body: JSON.stringify({ title, slug, excerpt, content }),
         });
 
         if (!res.ok) {
-            const data = await res.json();
-            setStatus(`Error: ${data.error ?? 'Unknown error'}`);
+            const text = await res.text(); // <-- ALWAYS works, even if not JSON
+            setStatus(`Error ${res.status}: ${text || 'No response body'}`);
             return;
         }
 
         setStatus('Saved!');
-        // optional: redirect to the post or clear the form
+        // Optional: clear fields
+        // setTitle(''); setSlug(''); setExcerpt(''); setContent('');
     }
 
     return (
@@ -70,24 +73,21 @@ export default function NewPostPage() {
 
                 <div>
                     <label className="block text-sm font-medium">
-                        Content (Markdown with fenced code blocks)
+                        Content (Markdown)
                     </label>
                     <textarea
                         className="border rounded px-3 py-2 w-full font-mono text-sm"
-                        rows={16}
+                        rows={14}
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
                     />
                 </div>
 
-                <button
-                    type="submit"
-                    className="px-4 py-2 rounded bg-black text-white"
-                >
+                <button type="submit" className="px-4 py-2 rounded bg-black text-white">
                     Publish
                 </button>
 
-                {status && <p className="text-sm mt-2">{status}</p>}
+                {status && <p className="text-sm">{status}</p>}
             </form>
         </main>
     );

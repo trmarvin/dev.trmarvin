@@ -17,30 +17,32 @@
   --gray-800: #27272a;
   --gray-900: #18181b;
 
-  /* Brand (keep your purple for links, etc.) */
-  --brand-50: #faf6ff;
-  --brand-100: #f1e6ff;
-  --brand-200: #d9c4ff;
-  --brand-300: #b696ff;
-  --brand-400: #9870ff;
-  --brand-500: #7b4bff;
-  --brand-600: #6435d6;
-  --brand-700: #4e27a6;
-  --brand-800: #371a75;
-  --brand-900: #200d47;
-
-  /* Accent (your teal) – a usable scale */
+  /* Brand (your teal) – a usable scale */
   --accent-50: #effaf8;
   --accent-100: #d7f2ef;
   --accent-200: #b0e5e1;
   --accent-300: #7ad2cd;
   --accent-400: #4fbab4;
   --accent-500: #2d8c85;
-  /* your chosen accent */
+
+  /* Brand - Dark */
   --accent-600: #23716b;
   --accent-700: #1b5752;
   --accent-800: #143f3b;
   --accent-900: #0d2a28;
+
+  /* Contrast (Orange) */
+  --contrast-50: #fff4e6;
+  --contrast-100: #ffe4c7;
+  --contrast-200: #f9c892;
+  --contrast-300: #f2a95d;
+  --contrast-400: #e58f32;
+  --contrast-500: #d37a15;
+  /* PRIMARY */
+  --contrast-600: #b8650f;
+  --contrast-700: #8f4d0c;
+  --contrast-800: #663607;
+  --contrast-900: #402204;
 
   /* Semantic */
   --success: #4ade80;
@@ -59,8 +61,8 @@
 
   --border: var(--gray-700);
 
-  --link: var(--brand-300);
-  --link-hover: var(--brand-200);
+  --link: var(--accent-500);
+  --link-hover: var(--accent-400);
 
   /* Typography (keep the “nice” system look you liked) */
   --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
@@ -82,8 +84,8 @@
 
   --border: var(--gray-200);
 
-  --link: var(--brand-600);
-  --link-hover: var(--brand-700);
+  --link: var(--accent-500);
+  --link-hover: var(--accent-400);
 }
 
 /* ---------- Base styles ---------- */
@@ -95,6 +97,49 @@ body {
   font-family: var(--font-sans);
   background-color: var(--bg);
   color: var(--ink-1);
+}
+
+a {
+  color: var(--link);
+  text-decoration-color: color-mix(in oklab, var(--link), transparent 70%);
+}
+
+a:hover {
+  color: var(--link-hover);
+}
+
+p {
+  line-height: 1.7;
+}
+
+p+p {
+  margin-top: 1.25rem;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+  color: var(--ink-1);
+}
+
+h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin: 0 0 1rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  font-weight: 650;
+  /* ok if supported; otherwise use 600 */
+  margin: 2.25rem 0 0.75rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 1.75rem 0 0.5rem;
 }
 
 /* ---------- Accent utility classes (so your text-accent-300 works today) ---------- */
@@ -132,4 +177,16 @@ body {
 
 .bg-accent-soft {
   background-color: rgba(45, 140, 133, 0.10);
+}
+
+.brand-prefix {
+  color: var(--brand-500);
+  font-weight: 700;
+  /* medium */
+}
+
+.brand-name {
+  color: var(--ink-1);
+  font-weight: 400;
+  /* semibold */
 }
