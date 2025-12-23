@@ -7,7 +7,11 @@ const config: Config = {
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      textColor: {
+        accent: "#2d8c85",   // <-- Your accent color (works for text-accent)
+      },
+    },
   },
   plugins: [],
 };

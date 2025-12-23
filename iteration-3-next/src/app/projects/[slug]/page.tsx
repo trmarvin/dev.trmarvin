@@ -78,7 +78,7 @@ export default async function ProjectPage(
     } = project;
 
     const statusColors: Record<string, string> = {
-        live: "border-emerald-400/60 bg-emerald-500/10 text-emerald-100",
+        live: "border-emeraldaccent-400/60 bg-accent-500/10 text-accent-100",
         "in-progress": "border-amber-400/70 bg-amber-500/10 text-amber-100",
         archived: "border-slate-500/60 bg-slate-700/40 text-slate-200",
         featured: "border-cyan-400/70 bg-cyan-500/10 text-cyan-100",
@@ -91,10 +91,6 @@ export default async function ProjectPage(
 
     return (
         <main className="mx-auto flex max-w-3xl flex-col gap-10 px-4 py-10 sm:px-6 lg:px-0">
-            {/* Debug – you can delete this once everything looks correct */}
-            <p className="text-xs text-cyan-300">
-                DEBUG – slug from URL: {slug} | project.slug: {project.slug}
-            </p>
 
             {/* Back link */}
             <div>
