@@ -9,17 +9,19 @@ export default function HomePage() {
         <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
           Full-stack developer, writer, and inveterate builder.
         </h1>
-        <p className="max-w-2xl text-sm leading-relaxed text-slate-300 sm:text-base">
+        <p className="max-w-2xl text-sm leading-relaxed sm:text-base">
           Hello World—I'm Tamar, a developer with a background in scholarship,
           rabbinics, and design. This is my development lab: projects in
           JavaScript, Node, React, Next.js, and beyond, plus the occasional
-          deep dive into code, craft, and learning. I’ve been tinkering online
-          since the <a href="https://lynx.invisible-island.net/">Lynx</a> era.
+          deep dive into code, craft, and learning.</p>
+
+        <p className="max-w-2xl text-sm leading-relaxed sm:text-base">
+          I’ve been tinkering online since the
+          <a href="https://lynx.invisible-island.net/">Lynx</a> era.
           I still love the weirdness of the early internet but as a techno-optimist,
           I look forward to the possibilities of the future web. After a career in
           academia, I’m now focused on web development — especially learning tools
-          that make complex ideas feel approachable and resonant.
-        </p>
+          that make complex ideas feel approachable and resonant.</p>
       </div>
 
       {/* Highlights */}
@@ -72,11 +74,6 @@ export default function HomePage() {
           >
             Visit trmarvin.org
           </a>
-
-          <a href="https://github.com/trmarvin">GitHub</a>
-          <a rel="me" href="https://hachyderm.io/@trmarvin">Mastodon (dev)</a>
-          <a rel="me" href="https://babka.social/@trmarvin">Mastodon (writing)</a>
-          Elsewhere
 
         </div>
       </div>
