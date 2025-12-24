@@ -1,26 +1,37 @@
 {
-  "type": "module",
+  "name": "iteration-3-next",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "dev": "nodemon server.js",
-    "start": "node server.js",
-    "seed": "node scripts/seed.mjs"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.1.0",
-    "basic-auth": "^2.0.1",
-    "compression": "^1.8.1",
-    "cors": "^2.8.5",
-    "dotenv": "^17.2.3",
-    "ejs": "^3.1.10",
-    "express": "^5.1.0",
-    "express-ejs-layouts": "^2.5.1",
-    "express-rate-limit": "^8.2.1",
-    "helmet": "^8.1.0",
-    "method-override": "^3.0.0",
-    "pg": "^8.16.3"
+    "@prisma/client": "^7.1.0",
+    "next": "^16.0.7",
+    "pg": "^8.16.3",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "react-markdown": "^10.1.0",
+    "react-syntax-highlighter": "^16.1.0"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.17",
+    "@types/node": "^20",
     "@types/pg": "^8.15.6",
-    "nodemon": "^3.1.10"
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/react-syntax-highlighter": "^15.5.13",
+    "autoprefixer": "^10.4.22",
+    "babel-plugin-react-compiler": "1.0.0",
+    "eslint": "^9",
+    "eslint-config-next": "16.0.3",
+    "postcss": "^8.5.6",
+    "prisma": "^7.1.0",
+    "tailwindcss": "^4.1.17",
+    "typescript": "^5"
   }
 }

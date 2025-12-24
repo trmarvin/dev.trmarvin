@@ -1,68 +1,36 @@
-# 👩🏻‍💻 dev.trmarvin
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-A public build-in-progress dev portfolio by **Tamar Ron Marvin**.
+## Getting Started
 
-This repo tracks the evolution of `dev.trmarvin.org`, starting with a vanilla HTML/CSS/JS version for my bootcamp hackathon and progressively rebuilt using Node.js, Express, and later React/Next.js.
-
----
-
-## 🚧 Current Iteration
-**Iteration 1 — Vanilla HTML/CSS/JS**
-- Static prototype of blog and portfolio sections
-- To be followed by Iteration 2: Express + EJS + PostgreSQL backend
-
----
-
-## 🧠 Tech Stack
-- Node.js / Express
-- PostgreSQL
-- HTML / CSS / JS
-- (future) React / Next.js
-- Cloudflare Pages for static deploys
-
----
-
-## 🧭 Roadmap
-- [ ] Express + EJS blog API
-- [ ] PostgreSQL integration
-- [ ] REST → GraphQL transition
-- [ ] React frontend
-- [ ] Deploy to `dev.trmarvin.org`
-
-
----
-
-## 🚀 Iteration Timeline
-
-| Version | Branch / Tag | Description | Stack | Live Demo |
-|----------|---------------|--------------|--------|------------|
-| `v0.1-vanilla` | [`archive/vanilla`](https://github.com/trmarvin/dev.trmarvin/tree/archive/vanilla) | Baseline static site with pure HTML, CSS, JS | Static | [vanilla.dev.trmarvin.org](https://vanilla.dev.trmarvin.org) |
-| `v0.2-express-ejs` | *(main)* | Express + EJS templating, basic CRUD API | Node.js, Express, EJS, Postgres | _TBD_ |
-| `v0.3-react` | *(planned)* | React/Next.js front end consuming API | Next.js, TypeScript | _TBD_ |
-
----
-
-## 🧠 Philosophy
-
-Each version is a self-contained learning milestone:
-- **v0.1** — Front-end fundamentals, layout, styling, and DOM manipulation.
-- **v0.2** — Server logic, routing, database CRUD, and authentication.
-- **v0.3** — Modern front-end integration, API design, and componentization.
-
-I’m documenting every stage to demonstrate growth in both code and conceptual design.
-
----
-
-## 🛠️ Local Development
+First, run the development server:
 
 ```bash
-git clone git@github.com:trmarvin/dev.trmarvin.git
-cd dev.trmarvin
-npm install
 npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
----
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## 📄 License
-MIT © Tamar Ron Marvin
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+
+## Learn More
+
+To learn more about Next.js, take a look at the following resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
