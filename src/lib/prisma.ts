@@ -20,7 +20,7 @@ const adapter = new PrismaPg(pool);
 export const prisma =
     globalForPrisma.prisma ??
     new PrismaClient({
-        adapter, // 👈 this is the key bit Prisma 7 wants
+        adapter, 
         log:
             process.env.NODE_ENV === "development"
                 ? ["query", "error", "warn"]

@@ -1,21 +1,18 @@
-// prisma/schema.prisma
-
-datasource db {
-  provider = "postgresql"
-}
-
 generator client {
   provider   = "prisma-client-js"
   engineType = "binary"
 }
 
+datasource db {
+  provider = "postgresql"
+}
 
 model Post {
   id        Int      @id @default(autoincrement())
   slug      String   @unique
   title     String
   excerpt   String?
-  content   String   // markdown with ```js etc.
+  content   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   published Boolean  @default(true)
@@ -26,12 +23,20 @@ model Project {
   slug      String   @unique
   title     String
   summary   String?
-  content   String?  // markdown case study text (optional)
+  content   String?
   year      Int?
   role      String?
-  status    String?  // e.g. "in-progress", "live", "archived"
+  status    String?
   techStack String[] @default([])
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model posts {
+  id           Int       @id @default(autoincrement())
+  title        String
+  slug         String    @unique
+  excerpt      String?
+  body         String
+  published_at DateTime? @default(now()) @db.Timestamp(6)
 }

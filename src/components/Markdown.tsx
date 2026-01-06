@@ -7,41 +7,63 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 type MarkdownProps = {
-    children: string;
-    className?: string;
+  children: string;
+  className?: string;
 };
 
 export function Markdown({ children, className }: MarkdownProps) {
-    return (
-        <div className={className}>
-            <ReactMarkdown
-                components={{
-                    code(codeProps) {
-                        const { children, className, inline, ...rest } = codeProps as any;
-                        const match = /language-(\w+)/.exec(className || "");
-
-                        if (!inline && match) {
-                            return (
-                                <SyntaxHighlighter
-                                    style={oneDark as any}
-                                    language={match[1]}
-                                    PreTag="div"
-                                >
-                                    {String(children).replace(/\n$/, "")}
-                                </SyntaxHighlighter>
-                            );
-                        }
-
-                        return (
-                            <code className={className} {...rest}>
-                                {children}
-                            </code>
-                        );
-                    },
-                }}
-            >
+  return (
+    <div className={className}>
+      <ReactMarkdown
+        components={{
+          ul({ children, ...props }) {
+            return (
+              <ul
+                style={{ listStyleType: "disc", paddingInlineStart: "1.5rem" }}
+                {...props}
+              >
                 {children}
-            </ReactMarkdown>
-        </div>
-    );
+              </ul>
+            );
+          },
+
+          ol({ children, ...props }) {
+            return (
+              <ol
+                style={{ listStyleType: "decimal", paddingInlineStart: "1.5rem" }}
+                {...props}
+              >
+                {children}
+              </ol>
+            );
+          },
+
+          code(codeProps) {
+            const { children, className, inline, ...rest } = codeProps as any;
+            const match = /language-(\w+)/.exec(className || "");
+
+            if (!inline && match) {
+              return (
+                <SyntaxHighlighter
+                  style={oneDark as any}
+                  language={match[1]}
+                  PreTag="div"
+                >
+                  {String(children).replace(/\n$/, "")}
+                </SyntaxHighlighter>
+              );
+            }
+
+            return (
+              <code className={className} {...rest}>
+                {children}
+              </code>
+            );
+          },
+        }}
+      >
+        {children}
+      </ReactMarkdown>
+    </div>
+  );
 }
