@@ -1,10 +1,9 @@
 {
   "compilerOptions": {
-    // ⬇️ key change here
-    "baseUrl": "src",
+    "baseUrl": ".",
     "paths": {
       "@/*": [
-        "*"
+        "./src/*"
       ]
     },
     "target": "es5",

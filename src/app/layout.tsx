@@ -3,9 +3,63 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
+const siteUrl = "https://dev.trmarvin.org";
+const siteName = "dev.trmarvin";
+const defaultTitle = "Tamar Ron Marvin — Developer Portfolio";
+const defaultDescription =
+  "Projects, writing, and work by Tamar Ron-Marvin.";
+
 export const metadata: Metadata = {
-  title: "dev.trmarvin",
-  description: "Development portfolio of Tamar Ron Marvin",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: defaultTitle,
+    template: `%s · ${siteName}`,
+  },
+  description: defaultDescription,
+  applicationName: siteName,
+  alternates: {
+    canonical: "/",
+    types: {
+      "application/rss+xml": [{ url: "/rss.xml", title: `${siteName} RSS` }],
+    },
+  },
+  robots: {
+    index: true,
+    follow: true,
+    // optional, but nice:
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    url: siteUrl,
+    siteName,
+    title: defaultTitle,
+    description: defaultDescription,
+    images: [
+      {
+        url: "/og.png", // we’ll create this
+        width: 1200,
+        height: 630,
+        alt: defaultTitle,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: defaultTitle,
+    description: defaultDescription,
+    images: ["/og.png"],
+  },
+  icons: {
+    icon: "/favicon.ico",
+    // optionally add: apple: "/apple-touch-icon.png"
+  },
 };
 
 export default function RootLayout({
