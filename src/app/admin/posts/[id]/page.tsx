@@ -38,6 +38,13 @@ export default function EditPostPage() {
         cache: "no-store",
       });
 
+      if (!res.ok) {
+        const text = await res.text();
+        setStatus(`Error ${res.status}: ${text || "No response body"}`);
+        setLoading(false);
+        return;
+      }
+
       const data = (await res.json()) as { post: Post };
       const post = data.post;
 

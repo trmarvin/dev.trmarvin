@@ -1,8 +1,6 @@
-/* ---------- Tailwind ---------- */
 @import "tailwindcss";
 
 /* ---------- DESIGN TOKENS (dev.trmarvin) ---------- */
-
 /* Dark is the base theme */
 :root {
   /* Neutrals */
@@ -17,34 +15,46 @@
   --gray-800: #27272a;
   --gray-900: #18181b;
 
-  /* Brand (your teal) – a usable scale */
+  /* Accent palette (teal) */
   --accent-50: #effaf8;
   --accent-100: #d7f2ef;
   --accent-200: #b0e5e1;
   --accent-300: #7ad2cd;
   --accent-400: #4fbab4;
   --accent-500: #2d8c85;
-
-  /* Brand - Dark */
   --accent-600: #23716b;
   --accent-700: #1b5752;
   --accent-800: #143f3b;
   --accent-900: #0d2a28;
 
-  /* Contrast (Orange) */
-  --contrast-50: #fff4e6;
-  --contrast-100: #ffe4c7;
-  --contrast-200: #f9c892;
-  --contrast-300: #f2a95d;
-  --contrast-400: #e58f32;
-  --contrast-500: #d37a15;
-  /* PRIMARY */
-  --contrast-600: #b8650f;
-  --contrast-700: #8f4d0c;
-  --contrast-800: #663607;
-  --contrast-900: #402204;
+  /* Contrast palette — dev.trmarvin */
+  --contrast-50: #fff1eb;
+  --contrast-100: #ffd6c7;
+  --contrast-200: #ffb08f;
+  --contrast-300: #ff8557;
+  --contrast-400: #ff6430;
+  --contrast-500: #f2511b; /* PRIMARY */
+  --contrast-600: #e04a12;
+  --contrast-700: #d44500; /* DARK / STRONG */
+  --contrast-800: #a33400;
+  --contrast-900: #6e2200;
 
-  /* Semantic */
+  /* DARK MODE (default) — brand = teal */
+  --brand: var(--brand-500);
+  --brand-400: var(--accent-400);
+  --brand-500: var(--accent-500);
+  --brand-600: var(--accent-600);
+  --brand-700: var(--accent-700);
+
+  --link: var(--brand-500);
+  --link-hover: var(--brand-400);
+
+  /* SECONDARY / accent = teal */
+  --accent-soft: var(--accent-100);
+  --accent-main: var(--accent-500);
+  --accent-strong: var(--accent-600);
+
+  /* Semantic status */
   --success: #4ade80;
   --warning: #facc15;
   --error: #ef4444;
@@ -61,88 +71,135 @@
 
   --border: var(--gray-700);
 
-  --link: var(--accent-500);
-  --link-hover: var(--accent-400);
+  --link: var(--brand-500);
+  --link-hover: var(--brand-400);
 
-  /* Typography (keep the “nice” system look you liked) */
-  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  /* Typography */
+  --font-sans: "Helvetica Neue", Helvetica, ui-sans-serif, system-ui,
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-serif: var(--font-caslon), Georgia, serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
     "Liberation Mono", "Courier New", monospace;
 }
 
-/* Light theme overrides (when data-theme="light") */
-[data-theme="light"] {
+/* ---------- Light theme overrides ---------- */
+:root[data-theme="light"] {
+  /* Surfaces */
   --bg: var(--gray-50);
   --surface-1: #ffffff;
   --surface-2: #f9f9fb;
   --surface-3: #f2f2f5;
 
+  /* Ink */
   --ink-1: var(--gray-900);
   --ink-2: var(--gray-700);
   --ink-3: var(--gray-500);
 
+  /* Borders */
   --border: var(--gray-200);
 
-  --link: var(--accent-500);
-  --link-hover: var(--accent-400);
+  /* 🔶 LIGHT MODE BRAND = ORANGE */
+  --brand-400: var(--contrast-400);
+  --brand-500: var(--contrast-500); /* #f2511b */
+  --brand-600: var(--contrast-700); /* #d44500 */
+  --brand-700: var(--contrast-800);
+
+  /* Links */
+  --link: var(--brand-500);
+  --link-hover: var(--brand-600);
 }
 
 /* ---------- Base styles ---------- */
-html {
-  scroll-behavior: smooth;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--bg);
+    color: var(--ink-1);
+  }
+
+  a {
+    color: var(--link);
+    text-decoration-color: color-mix(in oklab, var(--link), transparent 70%);
+  }
+
+  a:hover {
+    color: var(--link-hover);
+  }
+
+  p {
+    line-height: 1.7;
+  }
+
+  p + p {
+    margin-top: 1.25rem;
+  }
+
+  h1,
+  h2,
+  h3 {
+    line-height: 1.2;
+    color: var(--ink-1);
+  }
+
+  h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin: 0 0 1rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 650;
+    margin: 2.25rem 0 0.75rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 1.75rem 0 0.5rem;
+  }
 }
 
-body {
-  font-family: var(--font-sans);
-  background-color: var(--bg);
-  color: var(--ink-1);
+/* ---------- Rules ---------- */
+/* Drop <div className="rule my-8" /> wherever. */
+.rule {
+  border-top: 1px solid var(--border);
 }
 
-a {
-  color: var(--link);
-  text-decoration-color: color-mix(in oklab, var(--link), transparent 70%);
+.rule-strong {
+  border-top: 2px solid var(--accent-main);
 }
 
-a:hover {
-  color: var(--link-hover);
+/* ---------- Brand (primary) utilities ---------- */
+.text-brand-400 {
+  color: var(--brand-400);
 }
 
-p {
-  line-height: 1.7;
+.text-brand-500 {
+  color: var(--brand-500);
 }
 
-p+p {
-  margin-top: 1.25rem;
+.text-brand-600 {
+  color: var(--brand-600);
 }
 
-h1,
-h2,
-h3 {
-  line-height: 1.2;
-  color: var(--ink-1);
+.bg-brand-500 {
+  background-color: var(--brand-500);
 }
 
-h1 {
-  font-size: 2.25rem;
-  font-weight: 700;
-  margin: 0 0 1rem;
+.border-brand-500 {
+  border-color: var(--brand-500);
 }
 
-h2 {
-  font-size: 1.5rem;
-  font-weight: 650;
-  /* ok if supported; otherwise use 600 */
-  margin: 2.25rem 0 0.75rem;
+.bg-brand-soft {
+  background-color: color-mix(in oklab, var(--brand-500), transparent 85%);
 }
 
-h3 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin: 1.75rem 0 0.5rem;
-}
-
-/* ---------- Accent utility classes (so your text-accent-300 works today) ---------- */
+/* ---------- Accent (secondary) utilities ---------- */
 .text-accent-300 {
   color: var(--accent-300);
 }
@@ -176,17 +233,27 @@ h3 {
 }
 
 .bg-accent-soft {
-  background-color: rgba(45, 140, 133, 0.10);
+  background-color: color-mix(in oklab, var(--accent-main), transparent 90%);
 }
 
+/* ---------- Branding helpers ---------- */
 .brand-prefix {
   color: var(--brand-500);
   font-weight: 700;
-  /* medium */
 }
 
 .brand-name {
   color: var(--ink-1);
   font-weight: 400;
-  /* semibold */
+}
+
+/* Marginalia toggle */
+/* Marginalia toggle: hide right rail only */
+html[data-marginalia="off"] .mf-right {
+  display: none !important;
+}
+
+/* Collapse 3-col grid to 2-col grid (left + main) */
+html[data-marginalia="off"] .mf-grid {
+  grid-template-columns: minmax(120px, 160px) minmax(0, 920px) !important;
 }

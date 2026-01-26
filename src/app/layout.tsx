@@ -1,20 +1,28 @@
+// app/layout.tsx
 import type { Metadata } from "next";
 import "./globals.css";
+
 import { ThemeProvider } from "@/components/ThemeProvider";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { SiteHeader } from "@/components/layout/SiteHeader";
+
+import { Libre_Caslon_Text } from "next/font/google";
+
+const caslon = Libre_Caslon_Text({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
+  variable: "--font-caslon", // <-- IMPORTANT: unique var name
+  display: "swap",
+});
 
 const siteUrl = "https://dev.trmarvin.org";
 const siteName = "dev.trmarvin";
 const defaultTitle = "Tamar Ron Marvin — Developer Portfolio";
-const defaultDescription =
-  "Projects, writing, and work by Tamar Ron-Marvin.";
+const defaultDescription = "Developer | Information Architect | Scholar";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: {
-    default: defaultTitle,
-    template: `%s · ${siteName}`,
-  },
+  title: { default: defaultTitle, template: `%s · ${siteName}` },
   description: defaultDescription,
   applicationName: siteName,
   alternates: {
@@ -26,7 +34,6 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-    // optional, but nice:
     googleBot: {
       index: true,
       follow: true,
@@ -41,14 +48,7 @@ export const metadata: Metadata = {
     siteName,
     title: defaultTitle,
     description: defaultDescription,
-    images: [
-      {
-        url: "/og.png", // we’ll create this
-        width: 1200,
-        height: 630,
-        alt: defaultTitle,
-      },
-    ],
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: defaultTitle }],
   },
   twitter: {
     card: "summary_large_image",
@@ -56,10 +56,7 @@ export const metadata: Metadata = {
     description: defaultDescription,
     images: ["/og.png"],
   },
-  icons: {
-    icon: "/favicon.ico",
-    // optionally add: apple: "/apple-touch-icon.png"
-  },
+  icons: { icon: "/favicon.ico" },
 };
 
 export default function RootLayout({
@@ -68,53 +65,30 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className="min-h-screen antialiased">
+    <html
+      lang="en"
+      className={caslon.variable} // <-- makes --font-caslon available
+      suppressHydrationWarning
+    >
+      <body className="min-h-screen antialiased bg-[color:var(--bg)] text-[color:var(--ink-1)]">
         <ThemeProvider>
           <div className="flex min-h-screen flex-col">
-            {/* Site header */}
-
-            <header className="border-b border-slate-800 bg-slate-950/80 backdrop-blur">
-              <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
-                <a href="/" className="text-sm tracking-tight">
-                  <span className="brand-prefix">dev.</span>
-                  <span className="brand-name">trmarvin</span>
-                </a>
-
-
-                <nav className="flex items-center gap-5 text-sm font-medium text-slate-300">
-                  <a href="/" className="hover:text-accent">
-                    Home
-                  </a>
-                  <a href="/blog" className="hover:text-accent">
-                    Blog
-                  </a>
-                  <a href="/projects" className="hover:text-accent">
-                    Projects
-                  </a>
-                  <a href="/about" className="hover:text-accent">
-                    About
-                  </a>
-
-                  {/* Theme toggle */}
-                  <ThemeToggle />
-                </nav>
-              </div>
+            <header>
+              <SiteHeader />
             </header>
 
-            {/* Page content */}
-            <main className="flex-1">
-              <div className="mx-auto max-w-5xl px-4 py-10 sm:py-14">
-                {children}
-              </div>
-            </main>
+            {/* IMPORTANT: root layout should NOT impose max-width */}
+            <main className="flex-1">{children}</main>
 
-            {/* Footer */}
-            <footer className="border-t border-slate-800 py-6 text-xs text-slate-400">
+            <footer className="border-t border-[color:var(--border)] py-6 text-xs text-[color:var(--ink-3)]">
               <div className="mx-auto flex max-w-5xl items-center justify-between px-4">
-                <span>© 2025 Tamar Marvin</span>
-                <span className="text-slate-500">
-                  Built with Next.js &amp; TypeScript
+                <span>© 2026 Tamar Ron Marvin</span>
+                <span className="text-[color:var(--ink-3)]">
+                  <a href="https://github.com/trmarvin">GitHub</a> ·{"  "}
+                  <a href="https://www.linkedin.com/in/trmarvin/">
+                    LinkedIn
+                  </a> · <a href="/colophon">Colophon</a> · Built with Next.js
+                  &amp; TypeScript
                 </span>
               </div>
             </footer>

@@ -1,32 +1,18 @@
-import Link from "next/link";
-import { projects } from "@/lib/projects";
+import type { Metadata } from "next";
+import type { Project } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { ProjectCard } from "@/components/projects/ProjectCard";
-import type { Project } from "@prisma/client";
-import type { Metadata } from "next";
-import { getPostBySlug } from "@/lib/posts"; // your function
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string };
-}): Promise<Metadata> {
-  const post = await getPostBySlug(params.slug);
-  if (!post) return {};
-
-  return {
-    title: post.title,
-    description: post.excerpt,
-    alternates: { canonical: `/blog/${post.slug}` },
-    openGraph: {
-      type: "article",
-      title: post.title,
-      description: post.excerpt,
-      url: `/blog/${post.slug}`,
-      images: [{ url: "/og.png", width: 1200, height: 630 }],
-    },
-  };
-}
+export const metadata: Metadata = {
+  title: "Projects · Tamar Marvin",
+  description: "A curated selection of things I’ve built.",
+  alternates: { canonical: "/projects" },
+  openGraph: {
+    title: "Projects · Tamar Marvin",
+    description: "A curated selection of things I’ve built.",
+    url: "/projects",
+  },
+};
 
 export default async function ProjectsIndexPage() {
   const projects: Project[] = await prisma.project.findMany({
