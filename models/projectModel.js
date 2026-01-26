@@ -2,13 +2,25 @@ import pool from "../config/db.js";
 
 /* ----- Retrieve projects for front page ----- */
 
+// No is_featured / published_at in this schema.
+// Treat “featured” as “most recent” by createdAt.
 export async function getFeaturedProjects(limit = 3) {
   const { rows } = await pool.query(
     `
-    SELECT id, title, slug, summary, thumbnail_url, tags, published_at
+    SELECT
+      id,
+      slug,
+      title,
+      summary,
+      content,
+      year,
+      role,
+      status,
+      "techStack",
+      "createdAt",
+      "updatedAt"
     FROM "Project"
-    WHERE is_featured IS TRUE
-    ORDER BY published_at DESC
+    ORDER BY "createdAt" DESC
     LIMIT $1;
     `,
     [limit],
@@ -20,9 +32,20 @@ export async function getFeaturedProjects(limit = 3) {
 export async function getAllProjects() {
   const { rows } = await pool.query(
     `
-    SELECT id, title, slug, summary, thumbnail_url, tags, published_at
+    SELECT
+      id,
+      slug,
+      title,
+      summary,
+      content,
+      year,
+      role,
+      status,
+      "techStack",
+      "createdAt",
+      "updatedAt"
     FROM "Project"
-    ORDER BY published_at DESC;
+    ORDER BY "createdAt" DESC;
     `,
   );
   return rows;
@@ -31,7 +54,18 @@ export async function getAllProjects() {
 export async function getProjectBySlug(slug) {
   const { rows } = await pool.query(
     `
-    SELECT id, title, slug, summary, body, thumbnail_url, tags, published_at
+    SELECT
+      id,
+      slug,
+      title,
+      summary,
+      content,
+      year,
+      role,
+      status,
+      "techStack",
+      "createdAt",
+      "updatedAt"
     FROM "Project"
     WHERE slug = $1
     LIMIT 1;
@@ -47,18 +81,22 @@ export async function createProject(data) {
     title,
     slug,
     summary = "",
-    body = "",
-    thumbnail_url = null,
-    tags = [],
+    content = "",
+    year = null,
+    role = "",
+    status = "",
+    techStack = "",
   } = data;
 
   const { rows } = await pool.query(
     `
-    INSERT INTO "Project" (title, slug, summary, body, thumbnail_url, tags, published_at)
-    VALUES ($1, $2, $3, $4, $5, $6, NOW())
+    INSERT INTO "Project"
+      (title, slug, summary, content, year, role, status, "techStack", "createdAt", "updatedAt")
+    VALUES
+      ($1, $2, $3, $4, $5, $6, $7, $8, NOW(), NOW())
     RETURNING *;
     `,
-    [title, slug, summary, body, thumbnail_url, tags],
+    [title, slug, summary, content, year, role, status, techStack],
   );
 
   return rows[0];
@@ -69,19 +107,30 @@ export async function updateProject(id, data) {
     title,
     slug,
     summary = "",
-    body = "",
-    thumbnail_url = null,
-    tags = [],
+    content = "",
+    year = null,
+    role = "",
+    status = "",
+    techStack = "",
   } = data;
 
   const { rows } = await pool.query(
     `
     UPDATE "Project"
-    SET title = $1, slug = $2, summary = $3, body = $4, thumbnail_url = $5, tags = $6
-    WHERE id = $7
+    SET
+      title = $1,
+      slug = $2,
+      summary = $3,
+      content = $4,
+      year = $5,
+      role = $6,
+      status = $7,
+      "techStack" = $8,
+      "updatedAt" = NOW()
+    WHERE id = $9
     RETURNING *;
     `,
-    [title, slug, summary, body, thumbnail_url, tags, id],
+    [title, slug, summary, content, year, role, status, techStack, id],
   );
 
   return rows[0];
