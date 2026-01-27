@@ -24,6 +24,10 @@ export default async function EditProjectPage({ params }: Ctx) {
       role: true,
       status: true,
       techStack: true,
+      featured: true,
+      featuredOrder: true,
+      repoUrl: true,
+      liveUrl: true,
     },
   });
 
@@ -43,6 +47,11 @@ export default async function EditProjectPage({ params }: Ctx) {
           role: project.role ?? "",
           status: project.status ?? "",
           techStack: project.techStack?.join(", ") ?? "",
+
+          featured: project.featured ?? false,
+          featuredOrder: project.featuredOrder?.toString() ?? "",
+          repoUrl: project.repoUrl ?? "",
+          liveUrl: project.liveUrl ?? "",
         }}
       />
     </section>

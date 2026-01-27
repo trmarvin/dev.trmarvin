@@ -1,5 +1,5 @@
-// app/page.tsx
 import { ManuscriptFrame } from "@/components/layout/ManuscriptFrame";
+import { prisma } from "@/lib/prisma";
 
 function Mark() {
   return (
@@ -105,7 +105,22 @@ function RightRail() {
   );
 }
 
-export default function HomePage() {
+export default async function HomePage() {
+  const featured = await prisma.project.findMany({
+    where: { featured: true },
+    orderBy: [{ featuredOrder: "asc" }, { year: "desc" }],
+    take: 3,
+    select: {
+      slug: true,
+      title: true,
+      summary: true,
+      techStack: true,
+      role: true,
+      status: true,
+      repoUrl: true,
+      liveUrl: true,
+    },
+  });
   return (
     <ManuscriptFrame
       left={<LeftRail />}
@@ -204,148 +219,80 @@ export default function HomePage() {
           </h2>
 
           <div className="mt-5 grid gap-6 md:grid-cols-2">
-            {/* Card 1 */}
-            <article className="md:col-span-2 group rounded-xl border border-[var(--border)] bg-[var(--surface-1)] p-5">
-              <div className="grid gap-3">
-                <header className="grid gap-1">
-                  <h3 className="text-base font-semibold text-[var(--ink-1)]">
-                    SeforimTracker
-                  </h3>
-                  <p className="text-sm text-[var(--ink-2)]">
-                    Edition-first model · bilingual UI · Jewish books as a
-                    first-class domain
-                  </p>
-                </header>
+            {featured.map((p, idx) => (
+              <article
+                key={p.slug}
+                className={[
+                  "group rounded-xl border border-[var(--border)] bg-[var(--surface-1)] p-5",
+                  idx === 0 ? "md:col-span-2" : "",
+                ].join(" ")}
+              >
+                <div className="grid gap-3">
+                  <header className="grid gap-1">
+                    <h3 className="text-base font-semibold text-[var(--ink-1)]">
+                      {p.title}
+                    </h3>
+                    {p.summary ? (
+                      <p className="text-sm text-[var(--ink-2)]">{p.summary}</p>
+                    ) : null}
+                  </header>
 
-                <dl className="mt-2 grid grid-cols-2 gap-x-4 gap-y-2 text-xs text-[var(--ink-2)]">
-                  <div>
-                    <dt className="uppercase tracking-wider text-[var(--ink-3)]">
-                      Stack
-                    </dt>
-                    <dd className="mt-0.5">
-                      TS · React/Redux · Node · Postgres
-                    </dd>
-                  </div>
-                  <div>
-                    <dt className="uppercase tracking-wider text-[var(--ink-2)]">
-                      Focus
-                    </dt>
-                    <dd className="mt-0.5">
-                      Data model · UX for deep libraries
-                    </dd>
-                  </div>
-                </dl>
+                  <dl className="mt-2 grid grid-cols-2 gap-x-4 gap-y-2 text-xs text-[var(--ink-2)]">
+                    <div>
+                      <dt className="uppercase tracking-wider text-[var(--ink-3)]">
+                        Stack
+                      </dt>
+                      <dd className="mt-0.5">
+                        {p.techStack?.length ? p.techStack.join(" · ") : "—"}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="uppercase tracking-wider text-[var(--ink-3)]">
+                        Focus
+                      </dt>
+                      <dd className="mt-0.5">{p.role ?? p.status ?? "—"}</dd>
+                    </div>
+                  </dl>
 
-                <footer className="mt-3 flex gap-4 text-sm">
-                  <a
-                    href="/projects/seforimtracker"
-                    className="text-[var(--link)] hover:underline"
-                  >
-                    Case study
-                  </a>
-                  <a
-                    href="https://github.com/…"
-                    className="text-[var(--link)] hover:underline"
-                  >
-                    GitHub
-                  </a>
-                </footer>
-              </div>
-            </article>
+                  <footer className="mt-3 flex gap-4 text-sm">
+                    <a
+                      href={`/projects/${p.slug}`}
+                      className="text-[var(--link)] hover:underline"
+                    >
+                      Case study
+                    </a>
 
-            {/* Card 2 */}
-            <article className="group rounded-xl border border-[var(--border)] bg-[var(--surface-1)] p-5">
-              <div className="grid gap-3">
-                <header className="grid gap-1">
-                  <h3 className="text-base font-semibold text-[var(--ink-1)]">
-                    trmarvin.org
-                  </h3>
-                  <p className="text-sm text-[var(--ink-2)]">
-                    Content-rich “online home” · IA-first structure · long-form
-                    writing + research
-                  </p>
-                </header>
+                    {p.repoUrl ? (
+                      <a
+                        href={p.repoUrl}
+                        className="text-[var(--link)] hover:underline"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        GitHub
+                      </a>
+                    ) : null}
 
-                <dl className="mt-2 grid grid-cols-2 gap-x-4 gap-y-2 text-xs text-[var(--ink-2)]">
-                  <div>
-                    <dt className="uppercase tracking-wider text-[var(--ink-3)]">
-                      Stack
-                    </dt>
-                    <dd className="mt-0.5">
-                      Next.js · MD(X) · tokens · search
-                    </dd>
-                  </div>
-                  <div>
-                    <dt className="uppercase tracking-wider text-[var(--ink-2)]">
-                      Focus
-                    </dt>
-                    <dd className="mt-0.5">
-                      Information architecture · typography
-                    </dd>
-                  </div>
-                </dl>
+                    {p.liveUrl ? (
+                      <a
+                        href={p.liveUrl}
+                        className="text-[var(--link)] hover:underline"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Visit site
+                      </a>
+                    ) : null}
+                  </footer>
+                </div>
+              </article>
+            ))}
 
-                <footer className="mt-3 flex gap-4 text-sm">
-                  <a
-                    href="/projects/trmarvin-org"
-                    className="text-[var(--link)] hover:underline"
-                  >
-                    Case study
-                  </a>
-                  <a
-                    href="https://trmarvin.org"
-                    className="text-[var(--link)] hover:underline"
-                  >
-                    Visit site
-                  </a>
-                </footer>
-              </div>
-            </article>
-
-            {/* Card 3 */}
-            <article className="group rounded-xl border border-[var(--border)] bg-[var(--surface-1)] p-5">
-              <div className="grid gap-3">
-                <header className="grid gap-1">
-                  <h3 className="text-base font-semibold text-[var(--ink-1)]">
-                    Kosher World Kitchen
-                  </h3>
-                  <p className="text-sm text-[var(--ink-2)]">
-                    Custom-build WordPress theme · custom plugin ·
-                    content-driven cooking platform + recipe publishing
-                  </p>
-                </header>
-
-                <dl className="mt-2 grid grid-cols-2 gap-x-4 gap-y-2 text-xs text-[var(--ink-2)]">
-                  <div>
-                    <dt className="uppercase tracking-wider text-[var(--ink-3)]">
-                      Stack
-                    </dt>
-                    <dd className="mt-0.5">PHP · React · WordPress</dd>
-                  </div>
-                  <div>
-                    <dt className="uppercase tracking-wider text-[var(--ink-2)]">
-                      Focus
-                    </dt>
-                    <dd className="mt-0.5">Site structure · functionality</dd>
-                  </div>
-                </dl>
-
-                <footer className="mt-3 flex gap-4 text-sm">
-                  <a
-                    href="/projects/kwk"
-                    className="text-[var(--link)] hover:underline"
-                  >
-                    Case study
-                  </a>
-                  <a
-                    href="https://…"
-                    className="text-[var(--link)] hover:underline"
-                  >
-                    Visit site
-                  </a>
-                </footer>
-              </div>
-            </article>
+            {featured.length === 0 ? (
+              <p className="text-sm text-[color:var(--ink-3)]">
+                No featured projects yet — mark some as featured in admin.
+              </p>
+            ) : null}
           </div>
         </section>
 

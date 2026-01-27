@@ -44,6 +44,18 @@ export async function POST(req: Request) {
         .map((s) => s.trim())
         .filter(Boolean);
 
+  const featured = Boolean(data.featured);
+
+  const featuredOrder =
+    data.featuredOrder === null ||
+    data.featuredOrder === undefined ||
+    data.featuredOrder === ""
+      ? null
+      : Number(data.featuredOrder);
+
+  const repoUrl = data.repoUrl ? String(data.repoUrl).trim() : null;
+  const liveUrl = data.liveUrl ? String(data.liveUrl).trim() : null;
+
   const created = await prisma.project.create({
     data: {
       title,
@@ -57,6 +69,11 @@ export async function POST(req: Request) {
       role: data.role ? String(data.role) : null,
       status: data.status ? String(data.status) : null,
       techStack,
+
+      featured,
+      featuredOrder,
+      repoUrl,
+      liveUrl,
     },
   });
 

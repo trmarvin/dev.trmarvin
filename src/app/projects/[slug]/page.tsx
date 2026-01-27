@@ -1,187 +1,155 @@
-export const dynamic = "force-dynamic";
-
-import { notFound } from "next/navigation";
-import type { Metadata } from "next";
-import type { Project } from "@prisma/client";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { ManuscriptFrame } from "@/components/layout/ManuscriptFrame";
+import { MarkdownPreview } from "@/components/admin/MarkdownPreview";
 
-type ProjectParams = {
-    slug: string;
-};
+export const runtime = "nodejs";
 
-// --- Data helper -------------------------------------------------------------
+type Params = { slug: string };
+type Ctx = { params: Params | Promise<Params> };
 
-async function getProject(slug: string): Promise<Project | null> {
-    return prisma.project.findUnique({
-        where: { slug },
-    });
-}
+export default async function ProjectPage({ params }: Ctx) {
+  const { slug } = await Promise.resolve(params);
+  if (!slug) return notFound();
 
-// --- Metadata ---------------------------------------------------------------
+  const project = await prisma.project.findUnique({
+    where: { slug },
+    select: {
+      title: true,
+      summary: true,
+      content: true,
+      year: true,
+      role: true,
+      status: true,
+      techStack: true,
+      updatedAt: true,
+    },
+  });
 
-export async function generateMetadata(
-    { params }: { params: Promise<ProjectParams> }
-): Promise<Metadata> {
-    const { slug } = await params;           // 👈 unwrap params
+  if (!project) return notFound();
 
-    const project = await getProject(slug);
+  const body = (
+    project.content?.trim() ||
+    project.summary?.trim() ||
+    ""
+  ).trim();
 
-    if (!project) {
-        return {
-            title: "Project not found | Tamar Marvin",
-        };
-    }
-
-    const title = `${project.title} – Project Case Study | Tamar Marvin`;
-    const description =
-        project.summary ??
-        "Case study from the developer portfolio of Tamar Marvin.";
-
-    return {
-        title,
-        description,
-        openGraph: {
-            title,
-            description,
-            type: "article",
-        },
-        twitter: {
-            card: "summary_large_image",
-            title,
-            description,
-        },
-    };
-}
-
-// --- Page -------------------------------------------------------------------
-
-export default async function ProjectPage(
-    { params }: { params: Promise<ProjectParams> }
-) {
-    const { slug } = await params;           // 👈 unwrap params here too
-
-    const project = await getProject(slug);
-
-    if (!project) {
-        notFound();
-    }
-
-    const {
-        title,
-        summary,
-        status,
-        year,
-        role,
-        techStack,
-        content,
-    } = project;
-
-    const statusColors: Record<string, string> = {
-        live: "border-emeraldaccent-400/60 bg-accent-500/10 text-accent-100",
-        "in-progress": "border-amber-400/70 bg-amber-500/10 text-amber-100",
-        archived: "border-slate-500/60 bg-slate-700/40 text-slate-200",
-        featured: "border-cyan-400/70 bg-cyan-500/10 text-cyan-100",
-    };
-
-    const badgeClass =
-        status && statusColors[status]
-            ? statusColors[status]
-            : statusColors["featured"];
-
-    return (
-        <main className="mx-auto flex max-w-3xl flex-col gap-10 px-4 py-10 sm:px-6 lg:px-0">
-
-            {/* Back link */}
-            <div>
-                <Link
+  return (
+    <ManuscriptFrame
+      className="py-2"
+      left={
+        <nav className="text-sm text-[color:var(--ink-2)]">
+          <div className="space-y-4">
+            <div className="space-y-1">
+              <div className="text-xs uppercase tracking-widest text-[color:var(--ink-3)]">
+                Navigation
+              </div>
+              <ul className="space-y-1">
+                <li>
+                  <Link
                     href="/projects"
-                    className="inline-flex items-center text-xs font-medium text-slate-300 hover:text-cyan-300"
-                >
-                    <span className="mr-1.5">←</span>
-                    All projects
-                </Link>
+                    className="hover:text-[color:var(--link)]"
+                  >
+                    ← Projects
+                  </Link>
+                </li>
+              </ul>
             </div>
 
-            {/* Header section */}
-            <header className="space-y-4">
-                <div className="flex flex-wrap items-start gap-3">
-                    <h1 className="text-3xl font-semibold tracking-tight text-slate-50">
-                        {title}
-                    </h1>
+            {/* Placeholder — later we can compute real TOC server-side */}
+            <div className="space-y-1">
+              <div className="text-xs uppercase tracking-widest text-[color:var(--ink-3)]">
+                On this page
+              </div>
+              <div className="text-xs text-[color:var(--ink-3)]">
+                (TOC coming soon)
+              </div>
+            </div>
+          </div>
+        </nav>
+      }
+      right={
+        <aside className="space-y-6 text-sm text-[color:var(--ink-2)]">
+          <section className="space-y-2">
+            <div className="text-xs uppercase tracking-widest text-[color:var(--ink-3)]">
+              Meta
+            </div>
 
-                    {status && (
-                        <span
-                            className={`inline-flex items-center rounded-full border px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.16em] ${badgeClass}`}
-                        >
-                            {status}
-                        </span>
-                    )}
+            <div className="space-y-2">
+              {project.year ? (
+                <div className="flex items-baseline justify-between border-b border-[color:var(--border)] pb-2">
+                  <span>Year</span>
+                  <span className="tabular-nums text-[color:var(--ink-1)]">
+                    {project.year}
+                  </span>
                 </div>
+              ) : null}
 
-                {summary && (
-                    <p className="max-w-2xl text-sm leading-relaxed text-slate-300/90">
-                        {summary}
-                    </p>
-                )}
+              {project.status ? (
+                <div className="flex items-baseline justify-between border-b border-[color:var(--border)] pb-2">
+                  <span>Status</span>
+                  <span className="text-[color:var(--ink-1)]">
+                    {project.status}
+                  </span>
+                </div>
+              ) : null}
 
-                <dl className="flex flex-wrap gap-x-6 gap-y-2 text-xs text-slate-300/90">
-                    {role && (
-                        <div className="flex items-center gap-1.5">
-                            <dt className="font-semibold text-slate-200">Role</dt>
-                            <dd>{role}</dd>
-                        </div>
-                    )}
-                    {year && (
-                        <div className="flex items-center gap-1.5">
-                            <dt className="font-semibold text-slate-200">Year</dt>
-                            <dd>{year}</dd>
-                        </div>
-                    )}
-                    {techStack && techStack.length > 0 && (
-                        <div className="flex flex-wrap items-center gap-2">
-                            <dt className="font-semibold text-slate-200">Tech</dt>
-                            <dd className="flex flex-wrap gap-1.5">
-                                {techStack.map((tech) => (
-                                    <span
-                                        key={tech}
-                                        className="rounded-full border border-slate-600/70 bg-slate-900/70 px-2 py-0.5 text-[0.68rem] font-medium uppercase tracking-[0.16em] text-slate-200/90"
-                                    >
-                                        {tech}
-                                    </span>
-                                ))}
-                            </dd>
-                        </div>
-                    )}
-                </dl>
-            </header>
+              {project.role ? (
+                <div className="flex items-baseline justify-between border-b border-[color:var(--border)] pb-2">
+                  <span>Role</span>
+                  <span className="text-[color:var(--ink-1)]">
+                    {project.role}
+                  </span>
+                </div>
+              ) : null}
+            </div>
+          </section>
 
-            {/* Body content */}
-            <section className="space-y-6">
-                {content ? (
-                    <article className="space-y-4 text-sm leading-relaxed text-slate-200">
-                        {content
-                            .split(/\n{2,}/)
-                            .map((block, index) => (
-                                <p key={index}>{block.trim()}</p>
-                            ))}
-                    </article>
-                ) : (
-                    <>
-                        <p className="text-sm text-slate-400/90">
-                            Case study coming soon. In the meantime, this project is included
-                            in the grid on the{" "}
-                            <Link
-                                href="/projects"
-                                className="underline decoration-slate-500 underline-offset-2 hover:text-cyan-300 hover:decoration-cyan-500"
-                            >
-                                projects page
-                            </Link>
-                            .
-                        </p>
-                    </>
-                )}
+          {project.techStack?.length ? (
+            <section className="space-y-2">
+              <div className="text-xs uppercase tracking-widest text-[color:var(--ink-3)]">
+                Stack
+              </div>
+
+              <ul className="flex flex-wrap gap-2">
+                {project.techStack.map((t) => (
+                  <li
+                    key={t}
+                    className="rounded-full border border-[color:var(--border)] bg-[var(--surface-1)] px-2.5 py-1 text-xs text-[color:var(--ink-2)]"
+                  >
+                    {t}
+                  </li>
+                ))}
+              </ul>
             </section>
-        </main>
-    );
+          ) : null}
+        </aside>
+      }
+    >
+      <article className="min-w-0">
+        <header className="space-y-4">
+          <h1 className="text-3xl font-semibold tracking-tight text-[color:var(--ink-1)]">
+            {project.title}
+          </h1>
+
+          {project.summary ? (
+            <p className="max-w-2xl text-sm leading-relaxed text-[color:var(--ink-2)]">
+              {project.summary}
+            </p>
+          ) : null}
+
+          <div className="border-b border-[color:var(--border)]" />
+        </header>
+
+        <div className="mt-8">
+          {body ? (
+            <MarkdownPreview content={body} />
+          ) : (
+            <p className="text-sm text-[color:var(--ink-3)]">No content yet.</p>
+          )}
+        </div>
+      </article>
+    </ManuscriptFrame>
+  );
 }

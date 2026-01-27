@@ -8,10 +8,15 @@ type ProjectPayload = {
   slug: string;
   summary: string;
   content: string;
-  year: string; // keep as string for input
+  year: string;
   role: string;
   status: string;
-  techStack: string; // comma-separated in UI
+  techStack: string;
+
+  featured: boolean;
+  featuredOrder: string;
+  repoUrl: string;
+  liveUrl: string;
 };
 
 type ProjectEditorProps = {
@@ -20,12 +25,8 @@ type ProjectEditorProps = {
   initial?: Partial<ProjectPayload>;
 };
 
-export function ProjectEditor({
-  mode,
-  projectId,
-  initial,
-}: ProjectEditorProps) {
-  const [form, setForm] = useState<ProjectPayload>({
+function normalizeInitial(initial?: Partial<ProjectPayload>): ProjectPayload {
+  return {
     title: initial?.title ?? "",
     slug: initial?.slug ?? "",
     summary: initial?.summary ?? "",
@@ -34,28 +35,61 @@ export function ProjectEditor({
     role: initial?.role ?? "",
     status: initial?.status ?? "",
     techStack: initial?.techStack ?? "",
-  });
 
-  const [statusMsg, setStatusMsg] = useState<string>("");
+    featured: initial?.featured ?? false,
+    featuredOrder: initial?.featuredOrder ?? "",
+    repoUrl: initial?.repoUrl ?? "",
+    liveUrl: initial?.liveUrl ?? "",
+  };
+}
+
+export function ProjectEditor({
+  mode,
+  projectId,
+  initial,
+}: ProjectEditorProps) {
+  const normalizedInitial = useMemo(() => normalizeInitial(initial), [initial]);
+
+  const [form, setForm] = useState<ProjectPayload>(() =>
+    normalizeInitial(initial),
+  );
+
+  const [statusMsg, setStatusMsg] = useState("");
   const [saving, setSaving] = useState(false);
 
   // Auto-generate slug on create (gentle; stops once user edits slug)
   const [slugTouched, setSlugTouched] = useState(Boolean(initial?.slug));
+
   useEffect(() => {
     if (mode !== "create") return;
     if (slugTouched) return;
+
     const s = form.title
       .toLowerCase()
       .trim()
       .replace(/[^\w\s-]/g, "")
       .replace(/\s+/g, "-")
       .replace(/-+/g, "-");
+
     setForm((prev) => ({ ...prev, slug: s }));
   }, [form.title, mode, slugTouched]);
 
+  // ✅ Robust sync for edit mode:
+  // - runs when initial changes
+  // - also runs when projectId changes (route change / fast refresh)
+  useEffect(() => {
+    if (mode !== "edit") return;
+
+    // Helpful debug (client-side only)
+    // eslint-disable-next-line no-console
+    console.log("ProjectEditor sync", { projectId, initial });
+
+    setForm(normalizedInitial);
+    setSlugTouched(true);
+  }, [mode, projectId, normalizedInitial, initial]);
+
   const preview = useMemo(() => {
-    // Combine summary + body nicely (optional)
-    const parts = [];
+    const parts: string[] = [];
     if (form.summary.trim()) parts.push(form.summary.trim(), "");
     if (form.content.trim()) parts.push(form.content.trim());
     return parts.join("\n");
@@ -84,6 +118,13 @@ export function ProjectEditor({
         .split(",")
         .map((s) => s.trim())
         .filter(Boolean),
+
+      featured: !!form.featured,
+      featuredOrder: form.featuredOrder.trim()
+        ? Number(form.featuredOrder.trim())
+        : null,
+      repoUrl: form.repoUrl.trim() || null,
+      liveUrl: form.liveUrl.trim() || null,
     };
 
     try {
@@ -110,7 +151,6 @@ export function ProjectEditor({
 
       setStatusMsg("Saved.");
 
-      // On create, redirect to edit page
       if (mode === "create" && data?.project?.id) {
         window.location.href = `/admin/projects/${data.project.id}`;
         return;
@@ -131,6 +171,7 @@ export function ProjectEditor({
           <h1 className="text-xl font-semibold text-slate-50">
             {mode === "create" ? "New Project" : "Edit Project"}
           </h1>
+
           <button
             onClick={save}
             disabled={saving}
@@ -145,6 +186,7 @@ export function ProjectEditor({
         ) : null}
 
         <div className="grid gap-3">
+          {/* Title */}
           <label className="grid gap-1">
             <span className="text-xs uppercase tracking-wider text-slate-400">
               Title
@@ -156,6 +198,7 @@ export function ProjectEditor({
             />
           </label>
 
+          {/* Slug */}
           <label className="grid gap-1">
             <span className="text-xs uppercase tracking-wider text-slate-400">
               Slug
@@ -170,6 +213,7 @@ export function ProjectEditor({
             />
           </label>
 
+          {/* Year / Status */}
           <div className="grid gap-3 sm:grid-cols-2">
             <label className="grid gap-1">
               <span className="text-xs uppercase tracking-wider text-slate-400">
@@ -195,6 +239,60 @@ export function ProjectEditor({
             </label>
           </div>
 
+          {/* Featured / order */}
+          <div className="grid gap-3 sm:grid-cols-2">
+            <label className="flex items-center gap-2 rounded-md border border-slate-800 bg-slate-950 px-3 py-2">
+              <input
+                type="checkbox"
+                checked={form.featured}
+                onChange={(e) => update("featured", e.target.checked)}
+                className="h-4 w-4"
+              />
+              <span className="text-sm text-slate-200">Featured</span>
+            </label>
+
+            <label className="grid gap-1">
+              <span className="text-xs uppercase tracking-wider text-slate-400">
+                Featured order
+              </span>
+              <input
+                value={form.featuredOrder}
+                onChange={(e) => update("featuredOrder", e.target.value)}
+                inputMode="numeric"
+                className="rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-slate-100"
+                placeholder="1"
+              />
+            </label>
+          </div>
+
+          {/* Repo / Live */}
+          <div className="grid gap-3 sm:grid-cols-2">
+            <label className="grid gap-1">
+              <span className="text-xs uppercase tracking-wider text-slate-400">
+                Repo URL
+              </span>
+              <input
+                value={form.repoUrl}
+                onChange={(e) => update("repoUrl", e.target.value)}
+                className="rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-slate-100"
+                placeholder="https://github.com/…"
+              />
+            </label>
+
+            <label className="grid gap-1">
+              <span className="text-xs uppercase tracking-wider text-slate-400">
+                Live URL
+              </span>
+              <input
+                value={form.liveUrl}
+                onChange={(e) => update("liveUrl", e.target.value)}
+                className="rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-slate-100"
+                placeholder="https://…"
+              />
+            </label>
+          </div>
+
+          {/* Role */}
           <label className="grid gap-1">
             <span className="text-xs uppercase tracking-wider text-slate-400">
               Role
@@ -206,6 +304,7 @@ export function ProjectEditor({
             />
           </label>
 
+          {/* Tech stack */}
           <label className="grid gap-1">
             <span className="text-xs uppercase tracking-wider text-slate-400">
               Tech stack (comma-separated)
@@ -218,6 +317,7 @@ export function ProjectEditor({
             />
           </label>
 
+          {/* Summary */}
           <label className="grid gap-1">
             <span className="text-xs uppercase tracking-wider text-slate-400">
               Summary
@@ -230,6 +330,7 @@ export function ProjectEditor({
             />
           </label>
 
+          {/* Content */}
           <label className="grid gap-1">
             <span className="text-xs uppercase tracking-wider text-slate-400">
               Content (Markdown)

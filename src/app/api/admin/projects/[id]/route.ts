@@ -57,6 +57,30 @@ export async function PATCH(req: Request, ctx: Ctx) {
             .map((s) => s.trim())
             .filter(Boolean);
 
+  const featured =
+    data.featured !== undefined ? Boolean(data.featured) : undefined;
+
+  const featuredOrder =
+    data.featuredOrder !== undefined
+      ? data.featuredOrder === null || data.featuredOrder === ""
+        ? null
+        : Number(data.featuredOrder)
+      : undefined;
+
+  const repoUrl =
+    data.repoUrl !== undefined
+      ? data.repoUrl
+        ? String(data.repoUrl).trim()
+        : null
+      : undefined;
+
+  const liveUrl =
+    data.liveUrl !== undefined
+      ? data.liveUrl
+        ? String(data.liveUrl).trim()
+        : null
+      : undefined;
+
   const updated = await prisma.project.update({
     where: { id: projectId },
     data: {
@@ -93,6 +117,11 @@ export async function PATCH(req: Request, ctx: Ctx) {
             : null
           : undefined,
       techStack,
+
+      featured,
+      featuredOrder,
+      repoUrl,
+      liveUrl,
     },
   });
 
