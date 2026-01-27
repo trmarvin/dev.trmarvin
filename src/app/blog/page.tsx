@@ -89,11 +89,12 @@ export default async function BlogIndexPage() {
     >
       <section className="min-w-0">
         <header className="space-y-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-slate-50">
+          <h1 className="text-3xl font-semibold tracking-tight text-slate-500">
             Dev Notes
           </h1>
           <p className="max-w-2xl text-sm leading-relaxed text-slate-400/90">
-            Notes from the dev side of my life — builds, bugs, and experiments.
+            Notes from the dev side of my life — builds, learning/how-to,
+            reflections, and experiments.
           </p>
         </header>
 

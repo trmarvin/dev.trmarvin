@@ -36,7 +36,8 @@ export function SiteHeader() {
               href="/blog"
               className="text-[color:var(--ink-2)] hover:text-[color:var(--brand)] transition-colors"
             >
-              Dev Notes
+              <span className="hidden sm:inline">Dev Notes</span>
+              <span className="sm:hidden">Notes</span>
             </Link>
 
             <Link
@@ -50,11 +51,11 @@ export function SiteHeader() {
               href="/work"
               className="text-[color:var(--ink-2)] hover:text-[color:var(--brand)] transition-colors"
             >
-              Work with Me
+              <span className="hidden sm:inline">Work with Me</span>
+              <span className="sm:hidden">Hire</span>
             </Link>
 
             <MarginaliaToggle />
-
             <ThemeToggle />
           </nav>
         </div>
