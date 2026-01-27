@@ -1,3 +1,4 @@
+// src/app/projects/page.tsx
 import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
@@ -22,7 +23,9 @@ export default async function ProjectsIndexPage() {
       title: true,
       year: true,
       summary: true,
-      role: true, // ✅ exists per your error screenshot
+      role: true,
+      status: true,
+      techStack: true,
     },
   });
 
@@ -96,7 +99,7 @@ export default async function ProjectsIndexPage() {
           </p>
         ) : (
           <div className="mt-10 space-y-10">
-            {/* FEATURED (uses your schema fields only) */}
+            {/* FEATURED (homepage-style card) */}
             <section id="featured" className="space-y-4">
               <div className="flex items-baseline justify-between gap-6">
                 <h2 className="text-xs font-medium uppercase tracking-widest text-[color:var(--ink-3)]">
@@ -127,17 +130,21 @@ export default async function ProjectsIndexPage() {
                     <dl className="mt-2 grid grid-cols-2 gap-x-4 gap-y-2 text-xs text-[var(--ink-2)]">
                       <div>
                         <dt className="uppercase tracking-wider text-[var(--ink-3)]">
-                          Year
+                          Stack
                         </dt>
-                        <dd className="mt-0.5 tabular-nums">
-                          {featured.year ?? ""}
+                        <dd className="mt-0.5">
+                          {featured.techStack?.length
+                            ? featured.techStack.join(" · ")
+                            : ""}
                         </dd>
                       </div>
                       <div>
                         <dt className="uppercase tracking-wider text-[var(--ink-3)]">
                           Role
                         </dt>
-                        <dd className="mt-0.5">{featured.role ?? ""}</dd>
+                        <dd className="mt-0.5">
+                          {featured.role ?? featured.status ?? ""}
+                        </dd>
                       </div>
                     </dl>
 
@@ -189,9 +196,9 @@ export default async function ProjectsIndexPage() {
                           </p>
                         ) : null}
 
-                        {p.role ? (
+                        {p.role || p.status ? (
                           <p className="mt-1 text-xs text-[color:var(--ink-3)]">
-                            {p.role}
+                            {p.role ?? p.status}
                           </p>
                         ) : null}
                       </div>
