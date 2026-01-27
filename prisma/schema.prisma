@@ -30,4 +30,10 @@ model Project {
   techStack String[] @default([])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  featured      Boolean @default(false)
+  featuredOrder Int?
+  repoUrl       String?
+  liveUrl       String?
 }
+
