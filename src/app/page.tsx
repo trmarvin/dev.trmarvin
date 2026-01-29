@@ -5,7 +5,7 @@ function Mark() {
   return (
     <span
       aria-hidden
-      className="inline-block w-5 h-5 bg-[color:var(--brand-500)] mr-2"
+      className="inline-block w-6 h-6 bg-[color:var(--brand-500)] mr-2"
     />
   );
 }
@@ -73,9 +73,13 @@ function RightRail() {
         <p style={{ fontFamily: "var(--font-serif)" }}>
           Stacks change. They are tools for the fundamentals.
         </p>
+        <p style={{ fontFamily: "var(--font-serif)" }}>
+          Like bits of type, these tools create meaning: digitally instead of
+          emchanically.
+        </p>
       </div>
 
-      <div className="row-start-3 pt-40 mt-6 text-xs text-[color:var(--ink-3)] leading-relaxed">
+      <div className="row-start-4 pt-40 mt-6 text-xs text-[color:var(--ink-3)] leading-relaxed">
         <p style={{ fontFamily: "var(--font-serif)" }}>
           Image credits: Photo by{" "}
           <a href="https://unsplash.com/@fabiosbruun?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">
@@ -133,7 +137,7 @@ export default async function HomePage() {
         {/* ROW 1: HERO */}
         <section className="row-start-1">
           <div className="space-y-1.5">
-            <h1 className="text-3xl leading-tight text-[color:var(--ink-1)]">
+            <h1 className="text-5xl leading-tight text-[color:var(--gray-600)]">
               <Mark />
               Tamar Ron Marvin
             </h1>
@@ -144,64 +148,63 @@ export default async function HomePage() {
         </section>
 
         {/* ROW 2: RULE 1 */}
-        <div className="row-start-2 py-6">
+        <div className="row-start-2 py-2">
           <div className="rule" />
         </div>
 
-        {/* ROW 3: STACK (two vols: text left, image right) */}
-        <section id="stack" className="row-start-3 pt-1">
-          <div className="flex items-start gap-4">
-            <section id="stack" className="row-start-3 pt-2">
-              <div className="grid gap-8 md:grid-cols-[1.15fr_0.85fr] items-start">
-                {/* LEFT VOL: incipit + stack text */}
-                <div className="flex items-start gap-4">
-                  <span
-                    aria-hidden
-                    className="text-4xl font-semibold leading-none text-[color:var(--brand-500)] opacity-80 select-none"
+        <section id="stack" className="row-start-3 pt-2">
+          <div className="grid items-start gap-6 md:grid-cols-2 md:gap-8">
+            {/* LEFT: stack text */}
+            <div className="min-w-0 flex items-start gap-4">
+              <span
+                aria-hidden
+                className="select-none text-4xl font-semibold leading-none text-[color:var(--brand-500)] opacity-80 mt-0.5"
+              >
+                S
+              </span>
+
+              <div>
+                <h2 className="text-sm uppercase tracking-wide text-[color:var(--ink-3)]">
+                  Current Stack
+                </h2>
+
+                <ul className="mt-4 space-y-2 text-[color:var(--ink-2)]">
+                  <li>TypeScript · Node.js</li>
+                  <li>React · Next.js</li>
+                  <li>Prisma · PostgreSQL</li>
+                  <li>Tailwind · Redux Toolkit (as needed)</li>
+                </ul>
+
+                <div className="mt-4">
+                  <a
+                    href="/stack"
+                    className="text-[color:var(--brand)] hover:text-[color:var(--brand-500)] transition-colors"
                   >
-                    S
-                  </span>
-
-                  <div>
-                    <h2 className="text-sm uppercase tracking-wide text-[color:var(--ink-3)]">
-                      Current Stack
-                    </h2>
-
-                    <ul className="mt-4 space-y-2 text-[color:var(--ink-2)]">
-                      <li>TypeScript · Node.js</li>
-                      <li>React · Next.js</li>
-                      <li>Prisma · PostgreSQL</li>
-                      <li>Tailwind · Redux Toolkit (as needed)</li>
-                    </ul>
-
-                    <div className="mt-4">
-                      <a
-                        href="/stack"
-                        className="text-[color:var(--brand)] hover:text-[color:var(--brand-500)] transition-colors"
-                      >
-                        See full stack
-                      </a>
-                    </div>
-                  </div>
-                </div>
-
-                {/* RIGHT VOL: image block */}
-                <div className="md:pt-1">
-                  <figure className="overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--surface-2)]">
-                    <img
-                      src="/images/typeface.jpg"
-                      alt=""
-                      className="h-56 w-full object-cover opacity-90"
-                      loading="lazy"
-                    />
-                  </figure>
+                    All my tools &amp; technologies
+                  </a>
                 </div>
               </div>
-            </section>
+            </div>
+
+            {/* RIGHT: image */}
+            <div className="min-w-0 md:max-w-[360px] md:justify-self-end md:-mt-6">
+              <figure className="aspect-[4/3] overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface-2)]">
+                <img
+                  src="/images/typeface.jpg"
+                  alt=""
+                  className="w-full w-full object-cover opacity-95"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </figure>
+            </div>
           </div>
         </section>
 
         {/* ROW 4: WORK */}
+        <div className="row-start-4 py-2">
+          <div className="rule w-full opacity-60" />
+        </div>
         <section id="work" className="row-start-4 pt-8">
           <span
             aria-hidden
@@ -209,6 +212,7 @@ export default async function HomePage() {
         text-4xl font-semibold leading-none
         text-[color:var(--brand-500)]
         opacity-80
+        mt-0.5
         select-none
       "
           >
@@ -309,6 +313,7 @@ export default async function HomePage() {
         text-4xl font-semibold leading-none
         text-[color:var(--brand-500)]
         opacity-80
+        mt-0.5
         select-none
       "
           >
