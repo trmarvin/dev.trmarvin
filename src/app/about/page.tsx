@@ -45,7 +45,8 @@ function RightRail() {
           style={{ fontFamily: "var(--font-serif)" }}
         >
           I care about structure: how information is organized, read, and lived
-          with over time.
+          with over time. Organizing is my stress relief. But it's all for a
+          higher end: understanding, innovation, and knowledge production.
         </p>
       </section>
 
@@ -67,23 +68,21 @@ function RightRail() {
           <li>
             <a
               className="hover:underline"
-              rel="me"
-              href="https://hachyderm.io/@trmarvin"
+              href="https://www.linkedin.com/in/trmarvin/"
               target="_blank"
-              rel-noreferrer
+              rel="noreferrer"
             >
-              Mastodon (dev)
+              LinkedIn
             </a>
           </li>
           <li>
             <a
               className="hover:underline"
-              rel="me"
-              href="https://babka.social/@trmarvin"
+              href="https://www.instagram.com/tamar.marvin/"
               target="_blank"
-              rel-noreferrer
+              rel="noreferrer"
             >
-              Mastodon (writing)
+              Instagram
             </a>
           </li>
         </ul>
@@ -123,14 +122,15 @@ export default function AboutPage() {
             </p>
 
             <p>
-              My work sits at the intersection of software engineering, writing,
-              and knowledge design. I’m particularly interested in
-              content-heavy, mission-aligned projects that require systemic,
-              architectural solutions.
+              My work sits at the intersection of software engineering,
+              information architecture, and knowledge design. I’m particularly
+              interested in content-heavy, mission-aligned projects that require
+              systemic, architectural solutions.
             </p>
 
             <p>
-              I’ve been tinkering online since the{" "}
+              Although my first career was in academia, I’ve been tinkering
+              online since the{" "}
               <a
                 href="https://lynx.invisible-island.net/"
                 className="text-[color:var(--link)] hover:underline"
@@ -141,9 +141,19 @@ export default function AboutPage() {
               </a>{" "}
               era. I still love the weirdness of the early internet but as a
               techno-optimist, I look forward to the possibilities of the future
-              web. After a career in academia, I’m now focused on web
-              development — especially learning tools that make complex ideas
-              feel approachable and resonant.
+              web. In my own projects, I try to bridge my scholarly training
+              with modern development tools, building digital knowledge
+              platforms that make Jewish learning and other complex bodies of
+              knowledge more accessible, navigable, and alive.
+            </p>
+
+            <p>
+              When I’m not coding, I enjoy writing - my first book is making its
+              way to publication in 2027 or 2028 - and spend time with fiber
+              arts and mixed media/collage. I’m an inveterate learner, always
+              seeking to expand my knowledge and skills in technology as well as
+              humanities, arts, and traditional Jewish learning. I am based in
+              Israel, which I love exploring with my family.
             </p>
           </div>
         </section>
@@ -170,21 +180,21 @@ export default function AboutPage() {
             </a>
             <span className="text-[color:var(--ink-3)]">·</span>
             <a
-              href="https://hachyderm.io/@trmarvin"
+              href="https://www.linkedin.com/in/trmarvin/"
               className="text-[color:var(--link)] hover:underline"
               target="_blank"
               rel="me noreferrer"
             >
-              Mastodon (dev)
+              LinkedIn
             </a>
             <span className="text-[color:var(--ink-3)]">·</span>
             <a
-              href="https://babka.social/@trmarvin"
+              href="https://www.instagram.com/tamar.marvin/"
               className="text-[color:var(--link)] hover:underline"
               target="_blank"
               rel="me noreferrer"
             >
-              Mastodon (writing)
+              Instagram
             </a>
           </div>
         </section>
