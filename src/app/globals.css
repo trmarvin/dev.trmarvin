@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ---------- DESIGN TOKENS (dev.trmarvin) ---------- */
-/* Dark is the base theme */
+/* Light is the base theme */
 :root {
   /* Neutrals */
   --gray-50: #fafafa;
@@ -75,11 +75,13 @@
   --link-hover: var(--brand-400);
 
   /* Typography */
-  --font-sans: "Helvetica Neue", Helvetica, ui-sans-serif, system-ui,
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-sans:
+    "Helvetica Neue", Helvetica, ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
   --font-serif: var(--font-caslon), Georgia, serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
 }
 
 /* ---------- Light theme overrides ---------- */
