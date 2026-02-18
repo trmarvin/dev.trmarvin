@@ -357,8 +357,11 @@ export function ProjectEditor({
           </span>
         </div>
 
-        <div className="rounded-xl border border-slate-800 bg-slate-950 p-5">
-          <MarkdownPreview content={preview || "_(Nothing to preview yet.)_"} />
+        <div className="rounded-xl border border-slate-800 bg-slate-950 p-5 text-slate-100 prose-headings:text-slate-100">
+          <MarkdownPreview
+            content={preview || "_(Nothing to preview yet.)_"}
+            variant="admin"
+          />
         </div>
       </section>
     </div>

@@ -164,6 +164,13 @@
     font-weight: 600;
     margin: 1.75rem 0 0.5rem;
   }
+  /* Let Tailwind Typography control heading colors inside prose blocks */
+  .prose h1,
+  .prose h2,
+  .prose h3,
+  .prose h4 {
+    color: inherit;
+  }
 }
 
 /* ---------- Rules ---------- */

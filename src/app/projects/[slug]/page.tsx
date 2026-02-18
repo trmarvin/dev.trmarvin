@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { ManuscriptFrame } from "@/components/layout/ManuscriptFrame";
 import { MarkdownPreview } from "@/components/admin/MarkdownPreview";
+import { buildToc } from "@/lib/toc";
+import { LeftToc } from "@/components/LeftToc";
 
 export const runtime = "nodejs";
 
@@ -23,6 +25,8 @@ export default async function ProjectPage({ params }: Ctx) {
       role: true,
       status: true,
       techStack: true,
+      repoUrl: true,
+      liveUrl: true,
       updatedAt: true,
     },
   });
@@ -34,6 +38,8 @@ export default async function ProjectPage({ params }: Ctx) {
     project.summary?.trim() ||
     ""
   ).trim();
+
+  const toc = buildToc(body);
 
   return (
     <ManuscriptFrame
@@ -56,15 +62,8 @@ export default async function ProjectPage({ params }: Ctx) {
                 </li>
               </ul>
             </div>
-
-            {/* Placeholder — later we can compute real TOC server-side */}
             <div className="space-y-1">
-              <div className="text-xs uppercase tracking-widest text-[color:var(--ink-3)]">
-                On this page
-              </div>
-              <div className="text-xs text-[color:var(--ink-3)]">
-                (TOC coming soon)
-              </div>
+              <LeftToc toc={toc} />
             </div>
           </div>
         </nav>
@@ -122,6 +121,38 @@ export default async function ProjectPage({ params }: Ctx) {
                   </li>
                 ))}
               </ul>
+            </section>
+          ) : null}
+
+          {project.repoUrl || project.liveUrl ? (
+            <section className="space-y-2">
+              <div className="text-xs uppercase tracking-widest text-[color:var(--ink-3)]">
+                Links
+              </div>
+
+              <div className="space-y-2">
+                {project.repoUrl ? (
+                  <a
+                    href={project.repoUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="block border-b border-[color:var(--border)] pb-2 hover:text-[color:var(--link)]"
+                  >
+                    GitHub Repository →
+                  </a>
+                ) : null}
+
+                {project.liveUrl ? (
+                  <a
+                    href={project.liveUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="block border-b border-[color:var(--border)] pb-2 hover:text-[color:var(--link)]"
+                  >
+                    Live Demo →
+                  </a>
+                ) : null}
+              </div>
             </section>
           ) : null}
         </aside>
