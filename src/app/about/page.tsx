@@ -178,7 +178,7 @@ export default function AboutPage() {
             >
               GitHub
             </a>
-
+            <span className="text-[color:var(--ink-3)]">·</span>
             <a
               href="https://trmarvin.org"
               className="text-[color:var(--link)] hover:underline"
