@@ -84,7 +84,9 @@ export default function RootLayout({
 
             <footer className="border-t border-[color:var(--border)] py-6 text-xs text-[color:var(--ink-3)]">
               <div className="mx-auto flex max-w-5xl items-center justify-between px-4">
-                <span>© 2026 Tamar Ron Marvin</span>
+                <span>
+                  © 2026 <a href="https://trmarvin.org/">Tamar Ron Marvin</a>
+                </span>
                 <span className="text-[color:var(--ink-3)]">
                   <a href="https://github.com/trmarvin">GitHub</a> ·{"  "}
                   <a href="https://www.linkedin.com/in/trmarvin/">

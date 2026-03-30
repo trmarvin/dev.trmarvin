@@ -115,10 +115,10 @@ export default function AboutPage() {
 
           <div className="mt-8 space-y-4 text-[color:var(--ink-1)] leading-relaxed">
             <p>
-              I’m Tamar Ron Marvin — a developer with a background in
-              scholarship, focused on building thoughtful, well-structured
-              digital systems for complex ideas. I am also trained in graphic
-              design and interested in UI/UX.
+              I’m <a href="https://trmarvin.org">Tamar Ron Marvin</a> — a
+              developer with a background in scholarship, focused on building
+              thoughtful, well-structured digital systems for complex ideas. I
+              am also trained in graphic design and interested in UI/UX.
             </p>
 
             <p>
@@ -178,6 +178,15 @@ export default function AboutPage() {
             >
               GitHub
             </a>
+
+            <a
+              href="https://trmarvin.org"
+              className="text-[color:var(--link)] hover:underline"
+              target="_blank"
+            >
+              Scholar Site
+            </a>
+
             <span className="text-[color:var(--ink-3)]">·</span>
             <a
               href="https://www.linkedin.com/in/trmarvin/"
