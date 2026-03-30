@@ -139,7 +139,7 @@ export default async function HomePage() {
           <div className="space-y-1.5">
             <h1 className="text-5xl leading-tight text-[color:var(--gray-600)]">
               <Mark />
-              Tamar Ron Marvin
+              Tamar Marvin
             </h1>
             <p className="text-[color:var(--ink-2)]">
               Full-Stack Developer · Information Architect · Systems Thinker

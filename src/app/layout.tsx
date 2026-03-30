@@ -17,10 +17,13 @@ const caslon = Libre_Caslon_Text({
 
 const siteUrl = "https://dev.trmarvin.org";
 const siteName = "dev.trmarvin";
-const defaultTitle = "Tamar Ron Marvin — Developer Portfolio";
+const defaultTitle = "Tamar Marvin — Developer Portfolio";
 const defaultDescription = "Developer | Information Architect | Scholar";
 
 export const metadata: Metadata = {
+  icons: {
+    icon: [{ url: "/favicon.ico" }, { url: "/icon.png", type: "image/png" }],
+  },
   metadataBase: new URL(siteUrl),
   title: { default: defaultTitle, template: `%s · ${siteName}` },
   description: defaultDescription,
@@ -56,7 +59,6 @@ export const metadata: Metadata = {
     description: defaultDescription,
     images: ["/og.png"],
   },
-  icons: { icon: "/favicon.ico" },
 };
 
 export default function RootLayout({
